@@ -4,9 +4,11 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-gstreamer = "0.21"
-gstreamer-video = "0.21"
-gstreamer-app = "0.21"
-anyhow = "1.0"
+gstreamer = "0.25"
+gstreamer-video = "0.25"
+gstreamer-app = "0.25"
+anyhow = "1"
 parking_lot = "0.12"
 log = "0.4"
+tokio = { version = "1.43.0", features = ["full"] }
+uuid = { version = "1.13.1", features = ["v4"] }
