@@ -1,0 +1,30 @@
+# flutter_rust_bridge_codegen 설정 파일
+#
+# 사용법:
+#   flutter_rust_bridge_codegen generate
+#
+# 또는 dart pub global activate flutter_rust_bridge 후:
+#   dart run flutter_rust_bridge_codegen generate
+#
+# [ENV.md 섹션 2 & 3] 빌드 훅(hook/build.dart)이 네이티브 컴파일을 담당하고,
+# 본 파일은 Dart ↔ Rust FFI 바인딩 코드 자동 생성을 담당합니다.
+
+# Rust 소스의 API 진입점 (frb 어노테이션이 붙은 함수/구조체를 탐색할 파일)
+rust_input:
+  - rust/src/api.rs
+
+# 생성된 Dart 바인딩이 저장될 경로
+dart_output:
+  - lib/src/rust/
+
+# 생성된 Rust 글루 코드의 저장 경로 (rust/src/frb_generated.rs)
+rust_root: rust/
+
+# 출력 클래스 이름 (기본값: bridge)
+# dart_entrypoint_class_name: RustLib
+
+# C 헤더 생성 여부 (flutter_rust_bridge 내부 사용)
+# c_output_path: ios/Runner/bridge_generated.h
+
+# 코드 생성 옵션
+full_dep: true
