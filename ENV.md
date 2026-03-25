@@ -9,8 +9,9 @@
 * [cite_start]**Rust Toolchain**: `rustup`을 통해 설치된 최신 Stable 버전 [cite: 1]
 * [cite_start]**LLVM / Clang**: C ABI 바인딩 생성을 위해 필요 [cite: 1]
 * **GStreamer SDK**: 
-    * [cite_start]**Android/iOS**: 빌드 훅이 원격에서 사전 컴파일된 바이너리를 자동으로 수급하므로 별도 로컬 설치가 필요하지 않을 수 있습니다[cite: 1].
-    * [cite_start]**Desktop (Linux/macOS)**: 시스템 패키지 관리자를 통해 `libgstreamer1.0-dev` 등을 설치하여 시스템 공유 라이브러리를 참조할 수 있도록 합니다[cite: 1].
+    * **Android/iOS**: 빌드 훅이 원격 바이너리를 수급하여 자동화.
+    * **Desktop**: 시스템 패키지(`libgstreamer1.0-dev`) 필요.
+    * **참고**: Rust 레이어를 `bridge`와 `core`로 분리하여 **Dart 바인딩 생성(`generate`) 단계에서는 GStreamer SDK 없이도 동작**하도록 최적화되었습니다.
 
 ## 2. 네이티브 에셋 자동화 구조 (Native Assets)
 [cite_start]본 프로젝트는 플랫폼별 빌드 스크립트(Gradle, Podspec)에 의존하는 대신, `hook/build.dart`를 통해 네이티브 의존성을 관리합니다[cite: 1].
@@ -25,12 +26,17 @@
     ```bash
     flutter pub get
     ```
-2.  **빌드 훅 실행 및 코드 생성**:
-    [cite_start]별도의 복잡한 명령 없이 `flutter run` 또는 `flutter build` 실행 시 `hook/build.dart`가 자동으로 트리거되어 네이티브 라이브러리를 준비합니다[cite: 1].
+2.  **Dart ↔ Rust 바인딩 생성 (GStreamer SDK 불필요)**:
+    ```bash
+    # flutter_rust_bridge_codegen이 사전 설치되어 있어야 함 (cargo install)
+    flutter_rust_bridge_codegen generate
+    ```
+3.  **애플리케이션 빌드 및 실행 (GStreamer SDK 필요)**:
+    `flutter run` 실행 시 `hook/build.dart`가 가동되어 Rust 코드를 빌드하고 링킹합니다.
     ```bash
     flutter run
     ```
-    [cite_start]*참고: 필요시 `native_toolchain_rust`를 통해 사용자 로컬 환경에서 Rust 코드를 즉석 컴파일하여 병합합니다[cite: 1].*
+    *참고: 필요시 `native_toolchain_rust`가 자동으로 작동하여 최신 Rust 코드를 컴파일합니다.*
 
 ## 4. 환경 변수 및 보안 주의사항
 * [cite_start]**네이티브 추출**: Android의 경우, FFI의 안정적인 접근을 위해 `AndroidManifest.xml`에 `android:extractNativeLibs="true"` 설정이 필요할 수 있습니다[cite: 1].

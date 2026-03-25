@@ -6,7 +6,7 @@
 
 ## Phase 1 — 프로젝트 기반 정비
 
-- [ ] `chore: flutter_rust_bridge 코드 생성 파이프라인 구성`
+- [x] `chore: flutter_rust_bridge 코드 생성 파이프라인 구성`
   - `hook/build.dart` 생성
   - `pubspec.yaml`에 `native_toolchain_rust` 추가
   - `flutter_rust_bridge_codegen` 초기화
