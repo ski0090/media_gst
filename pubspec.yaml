@@ -1,6 +1,7 @@
 name: media_gst
 description: GStreamer 기반 Flutter 미디어 플레이어 플러그인 (flutter_rust_bridge v2)
 version: 1.0.0
+publish_to: none
 # repository: https://github.com/my_org/my_repo
 
 environment:
@@ -24,5 +25,6 @@ dev_dependencies:
   # hook/build.dart 에서 RustBuilder를 통해 사용됩니다. [ENV.md 섹션 2 참조]
   native_toolchain_rust: ^1.0.3
   hooks: ^1.0.0
+  ffigen: ^8.0.0
   integration_test:
     sdk: flutter

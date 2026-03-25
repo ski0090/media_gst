@@ -12,9 +12,10 @@ import 'package:native_toolchain_rust/native_toolchain_rust.dart';
 void main(List<String> args) async {
   await build(args, (input, output) async {
     await RustBuilder(
-      // flutter_rust_bridge_codegen이 생성한 Dart 바인딩 파일 경로
-      // (lib/ 기준 상대 경로)
-      assetName: 'src/rust/frb_generated.dart',
-    ).run(input: input, output: output);
+      assetName: 'frb_generated.dart',
+    ).run(
+      input: input,
+      output: output,
+    );
   });
 }

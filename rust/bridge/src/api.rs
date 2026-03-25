@@ -34,6 +34,14 @@ impl GstVideoPlayer {
 }
 
 // Global initialization
+/// GStreamer 런타임을 초기화합니다.
+/// 실제 구현은 core 라이브러리(media_gst_core)에서 처리됩니다.
 pub fn init_gstreamer() {
-    gstreamer::init().expect("Failed to initialize GStreamer");
+    #[cfg(feature = "gst")]
+    {
+        // core 라이브러리의 초기화 함수 호출
+        if let Err(e) = media_gst_core::initialize() {
+            log::error!("Failed to initialize GStreamer: {:?}", e);
+        }
+    }
 }

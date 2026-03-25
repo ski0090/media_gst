@@ -1,0 +1,23 @@
+[package]
+name = "media_gst_native"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "staticlib"]
+
+[features]
+# 빌드 환경에 GStreamer SDK가 있을 때만 활성화 (hook/build.dart 또는 cargokit에서 제어)
+gst = ["dep:media_gst_core"]
+default = []
+
+[dependencies]
+# flutter_rust_bridge v2
+flutter_rust_bridge = "=2.11.1"
+anyhow = "1.0"
+parking_lot = "0.12"
+log = "0.4"
+env_logger = "0.11"
+
+# 별도 상위 라이브러리 (브릿지에 GStreamer 직접 링킹을 배제하고자 옵션 처리)
+media_gst_core = { path = "../core", optional = true }
