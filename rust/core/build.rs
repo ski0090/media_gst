@@ -24,6 +24,6 @@ fn main() {
         }
     }
 
-    // GStreamer 연동에 필요한 헤더나 설정이 바뀔 경우를 위해 (core/src 내 변경 시 감지)
-    println!("cargo:rerun-if-changed=build.rs");
+    // GStreamer 설치 경로 환경 변수 변경 시 빌드 스크립트를 재실행하도록 지시합니다.
+    println!("cargo:rerun-if-env-changed=GSTREAMER_1_0_ROOT_MSVC_X86_64");
 }

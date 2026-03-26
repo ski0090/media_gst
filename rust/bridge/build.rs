@@ -7,9 +7,14 @@ fn main() {
     if env::var("CARGO_FEATURE_CODEGEN").is_ok() {
         // lib_flutter_rust_bridge_codegen::codegen::generate() 호출을 통해
         // bridge/src/api.rs로부터 frb_generated.rs 및 Dart 코드를 생성합니다.
-        if let Err(e) = lib_flutter_rust_bridge_codegen::codegen::generate(Default::default(), Default::default()) {
-            eprintln!("Error during flutter_rust_bridge_codegen::generate: {:?}", e);
-            // 빌드 중단이 필요한 경우 panic! 또는 exit(1) 고려 가능
+        if let Err(e) = lib_flutter_rust_bridge_codegen::codegen::generate(
+            Default::default(),
+            Default::default(),
+        ) {
+            panic!(
+                "Error during flutter_rust_bridge_codegen::generate: {:?}",
+                e
+            );
         }
     }
 

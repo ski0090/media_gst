@@ -31,7 +31,11 @@ TODO: List what your package can do. Maybe include images, gifs, or videos.
    * 설치 시 'Complete(전체 설치)' 유형을 선택하시길 권장합니다. (기본 설치 경로: `C:\gstreamer\1.0\msvc_x86_64` 또는 `C:\Program Files\gstreamer\1.0\msvc_x86_64`)
 2. **Rust 툴체인 설치**
    * 패키지 빌드를 위해 [rustup](https://rustup.rs/) 이 설치되어 있어야 합니다.
-3. 시스템에 설치가 완료된 후, Dart/Flutter 빌드 시스템이 코어 라이브러리를 통해 파이프라인 컴파일을 수행할 수 있게 됩니다.
+3. **로컬 환경 설정 파일 구성 (.cargo/config.toml)**
+   * `rust/.cargo/config.toml.example` 파일을 복사하거나 이름을 `config.toml`로 변경하여 생성합니다.
+   * 복사된 파일 내부의 `PKG_CONFIG_PATH`와 `GSTREAMER_1_0_ROOT_MSVC_X86_64`가 본인 PC의 실제 GStreamer 설치 경로와 일치하는지 확인합니다.
+   * (*참고: `.cargo/config.toml`은 `.gitignore`에 등록되어 버전 관리에서 제외되므로 개발자 환경에 맞게 자유롭게 수정 가능합니다.*)
+4. 시스템 설정이 완료된 후, Dart/Flutter 빌드 시스템(`build.dart`)이 코어 라이브러리를 통해 파이프라인 컴파일을 수행할 수 있게 됩니다.
 
 ## Usage
 
