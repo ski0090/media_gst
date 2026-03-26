@@ -14,8 +14,6 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_rust_bridge: 2.11.1
-  rust_lib_media_gst:
-    path: rust_builder
   native_toolchain_rust: ^1.0.3
   hooks: ^1.0.0
 
@@ -29,3 +27,17 @@ dev_dependencies:
   ffigen: ^20.1.1
   integration_test:
     sdk: flutter
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        ffiPlugin: true
+      ios:
+        ffiPlugin: true
+      linux:
+        ffiPlugin: true
+      macos:
+        ffiPlugin: true
+      windows:
+        ffiPlugin: true

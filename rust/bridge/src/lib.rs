@@ -1,4 +1,5 @@
 pub mod api;
+pub mod media_core;
 pub mod player_instance;
 mod frb_generated; /* 자동 생성될 파일 */
 

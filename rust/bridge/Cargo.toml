@@ -7,8 +7,6 @@ edition = "2021"
 crate-type = ["cdylib", "staticlib"]
 
 [features]
-# 빌드 환경에 GStreamer SDK가 있을 때만 활성화 (hook/build.dart 또는 cargokit에서 제어)
-gst = ["dep:media_gst_core"]
 # flutter_rust_bridge_codegen 자동 생성 활성화
 codegen = []
 default = []
@@ -23,10 +21,12 @@ env_logger = "0.11"
 tokio = { version = "=1.43.0", features = ["rt-multi-thread", "macros"] }
 uuid = { version = "=1.13.1", features = ["v4"] }
 
+# GStreamer dependencies moved from core
+gstreamer = "=0.25.1"
+gstreamer-video = "=0.25.0"
+gstreamer-app = "=0.25.0"
+
 [build-dependencies]
 # flutter_rust_bridge v2
 flutter_rust_bridge = "=2.11.1"
 flutter_rust_bridge_codegen = "=2.11.1"
-
-# 별도 상위 라이브러리 (브릿지에 GStreamer 직접 링킹을 배제하고자 옵션 처리)
-media_gst_core = { path = "../core", optional = true }
