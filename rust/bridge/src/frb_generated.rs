@@ -25,6 +25,7 @@
 
 // Section: imports
 
+use crate::api::*;
 use flutter_rust_bridge::for_generated::byteorder::{NativeEndian, ReadBytesExt, WriteBytesExt};
 use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
 use flutter_rust_bridge::{Handler, IntoIntoDart};
@@ -37,7 +38,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueNom,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.11.1";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -1360707947;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1832840201;
 
 // Section: executor
 
@@ -45,13 +46,15 @@ flutter_rust_bridge::frb_generated_default_handler!();
 
 // Section: wire_funcs
 
-fn wire__crate__api__gst_video_player_get_texture_id_impl(
+fn wire__crate__api__GstVideoPlayer_get_texture_id_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
-    that: impl CstDecode<crate::api::GstVideoPlayer>,
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GstVideoPlayer>>,
+    >,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "gst_video_player_get_texture_id",
+            debug_name: "GstVideoPlayer_get_texture_id",
             port: Some(port_),
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
@@ -59,41 +62,62 @@ fn wire__crate__api__gst_video_player_get_texture_id_impl(
             let api_that = that.cst_decode();
             move |context| {
                 transform_result_dco::<_, _, ()>((move || {
-                    let output_ok =
-                        Result::<_, ()>::Ok(crate::api::GstVideoPlayer::get_texture_id(&api_that))?;
+                    let mut api_that_guard = None;
+                    let decode_indices_ =
+                        flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                            flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                &api_that, 0, false,
+                            ),
+                        ]);
+                    for i in decode_indices_ {
+                        match i {
+                            0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                            _ => unreachable!(),
+                        }
+                    }
+                    let api_that_guard = api_that_guard.unwrap();
+                    let output_ok = Result::<_, ()>::Ok(
+                        crate::api::GstVideoPlayer::get_texture_id(&*api_that_guard),
+                    )?;
                     Ok(output_ok)
                 })())
             }
         },
     )
 }
-fn wire__crate__api__gst_video_player_new_impl(
+fn wire__crate__api__GstVideoPlayer_new_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
     config: impl CstDecode<crate::api::GstPlayerConfig>,
-) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "gst_video_player_new",
-            port: None,
-            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+            debug_name: "GstVideoPlayer_new",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
         move || {
             let api_config = config.cst_decode();
-            transform_result_dco::<_, _, ()>((move || {
-                let output_ok = Result::<_, ()>::Ok(crate::api::GstVideoPlayer::new(api_config))?;
-                Ok(output_ok)
-            })())
+            move |context| {
+                transform_result_dco::<_, _, ()>((move || {
+                    let output_ok =
+                        Result::<_, ()>::Ok(crate::api::GstVideoPlayer::new(api_config))?;
+                    Ok(output_ok)
+                })())
+            }
         },
     )
 }
-fn wire__crate__api__gst_video_player_set_size_impl(
+fn wire__crate__api__GstVideoPlayer_set_size_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
-    that: impl CstDecode<crate::api::GstVideoPlayer>,
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GstVideoPlayer>>,
+    >,
     width: impl CstDecode<i32>,
     height: impl CstDecode<i32>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "gst_video_player_set_size",
+            debug_name: "GstVideoPlayer_set_size",
             port: Some(port_),
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
@@ -103,8 +127,26 @@ fn wire__crate__api__gst_video_player_set_size_impl(
             let api_height = height.cst_decode();
             move |context| {
                 transform_result_dco::<_, _, ()>((move || {
+                    let mut api_that_guard = None;
+                    let decode_indices_ =
+                        flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                            flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                &api_that, 0, false,
+                            ),
+                        ]);
+                    for i in decode_indices_ {
+                        match i {
+                            0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                            _ => unreachable!(),
+                        }
+                    }
+                    let api_that_guard = api_that_guard.unwrap();
                     let output_ok = Result::<_, ()>::Ok({
-                        crate::api::GstVideoPlayer::set_size(&api_that, api_width, api_height);
+                        crate::api::GstVideoPlayer::set_size(
+                            &*api_that_guard,
+                            api_width,
+                            api_height,
+                        );
                     })?;
                     Ok(output_ok)
                 })())
@@ -112,31 +154,47 @@ fn wire__crate__api__gst_video_player_set_size_impl(
         },
     )
 }
-fn wire__crate__api__gst_video_player_set_source_impl(
+fn wire__crate__api__GstVideoPlayer_set_source_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
-    that: impl CstDecode<crate::api::GstVideoPlayer>,
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GstVideoPlayer>>,
+    >,
     uri: impl CstDecode<String>,
-    sync: impl CstDecode<bool>,
+    is_sync: impl CstDecode<bool>,
     custom_pipeline: impl CstDecode<Option<String>>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "gst_video_player_set_source",
+            debug_name: "GstVideoPlayer_set_source",
             port: Some(port_),
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
         move || {
             let api_that = that.cst_decode();
             let api_uri = uri.cst_decode();
-            let api_sync = sync.cst_decode();
+            let api_is_sync = is_sync.cst_decode();
             let api_custom_pipeline = custom_pipeline.cst_decode();
             move |context| {
                 transform_result_dco::<_, _, ()>((move || {
+                    let mut api_that_guard = None;
+                    let decode_indices_ =
+                        flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                            flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                &api_that, 0, false,
+                            ),
+                        ]);
+                    for i in decode_indices_ {
+                        match i {
+                            0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                            _ => unreachable!(),
+                        }
+                    }
+                    let api_that_guard = api_that_guard.unwrap();
                     let output_ok = Result::<_, ()>::Ok({
                         crate::api::GstVideoPlayer::set_source(
-                            &api_that,
+                            &*api_that_guard,
                             api_uri,
-                            api_sync,
+                            api_is_sync,
                             api_custom_pipeline,
                         );
                     })?;
@@ -192,6 +250,32 @@ impl CstDecode<u8> for u8 {
         self
     }
 }
+impl CstDecode<usize> for usize {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> usize {
+        self
+    }
+}
+impl SseDecode for GstVideoPlayer {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <RustOpaqueNom<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GstVideoPlayer>,
+        >>::sse_decode(deserializer);
+        return flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(inner);
+    }
+}
+
+impl SseDecode
+    for RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GstVideoPlayer>>
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <usize>::sse_decode(deserializer);
+        return unsafe { decode_rust_opaque_nom(inner) };
+    }
+}
+
 impl SseDecode for String {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -220,13 +304,6 @@ impl SseDecode for crate::api::GstPlayerConfig {
             max_queue_size: var_maxQueueSize,
             enable_audio: var_enableAudio,
         };
-    }
-}
-
-impl SseDecode for crate::api::GstVideoPlayer {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        return crate::api::GstVideoPlayer {};
     }
 }
 
@@ -279,6 +356,13 @@ impl SseDecode for () {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {}
 }
 
+impl SseDecode for usize {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        deserializer.cursor.read_u64::<NativeEndian>().unwrap() as _
+    }
+}
+
 fn pde_ffi_dispatcher_primary_impl(
     func_id: i32,
     port: flutter_rust_bridge::for_generated::MessagePort,
@@ -307,6 +391,21 @@ fn pde_ffi_dispatcher_sync_impl(
 // Section: rust2dart
 
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<GstVideoPlayer> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, StdArc<_>>(self.0)
+            .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for FrbWrapper<GstVideoPlayer> {}
+
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<GstVideoPlayer>> for GstVideoPlayer {
+    fn into_into_dart(self) -> FrbWrapper<GstVideoPlayer> {
+        self.into()
+    }
+}
+
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::GstPlayerConfig {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
@@ -326,16 +425,22 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::GstPlayerConfig>
         self
     }
 }
-// Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::GstVideoPlayer {
-    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
-        Vec::<u8>::new().into_dart()
+
+impl SseEncode for GstVideoPlayer {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GstVideoPlayer>>>::sse_encode(flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, StdArc<_>>(self), serializer);
     }
 }
-impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for crate::api::GstVideoPlayer {}
-impl flutter_rust_bridge::IntoIntoDart<crate::api::GstVideoPlayer> for crate::api::GstVideoPlayer {
-    fn into_into_dart(self) -> crate::api::GstVideoPlayer {
-        self
+
+impl SseEncode
+    for RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GstVideoPlayer>>
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        let (ptr, size) = self.sse_encode_raw();
+        <usize>::sse_encode(ptr, serializer);
+        <i32>::sse_encode(size, serializer);
     }
 }
 
@@ -361,11 +466,6 @@ impl SseEncode for crate::api::GstPlayerConfig {
         <i32>::sse_encode(self.max_queue_size, serializer);
         <bool>::sse_encode(self.enable_audio, serializer);
     }
-}
-
-impl SseEncode for crate::api::GstVideoPlayer {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {}
 }
 
 impl SseEncode for i32 {
@@ -414,6 +514,16 @@ impl SseEncode for () {
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {}
 }
 
+impl SseEncode for usize {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        serializer
+            .cursor
+            .write_u64::<NativeEndian>(self as _)
+            .unwrap();
+    }
+}
+
 #[cfg(not(target_family = "wasm"))]
 mod io {
     // This file is automatically generated, so please do not edit it.
@@ -422,6 +532,7 @@ mod io {
     // Section: imports
 
     use super::*;
+    use crate::api::*;
     use flutter_rust_bridge::for_generated::byteorder::{
         NativeEndian, ReadBytesExt, WriteBytesExt,
     };
@@ -434,6 +545,31 @@ mod io {
 
     // Section: dart2rust
 
+    impl CstDecode<GstVideoPlayer> for usize {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> GstVideoPlayer {
+            flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(CstDecode::<
+                RustOpaqueNom<
+                    flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GstVideoPlayer>,
+                >,
+            >::cst_decode(
+                self
+            ))
+        }
+    }
+    impl
+        CstDecode<
+            RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GstVideoPlayer>>,
+        > for usize
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(
+            self,
+        ) -> RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GstVideoPlayer>>
+        {
+            unsafe { decode_rust_opaque_nom(self as _) }
+        }
+    }
     impl CstDecode<String> for *mut wire_cst_list_prim_u_8_strict {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> String {
@@ -448,13 +584,6 @@ mod io {
             CstDecode::<crate::api::GstPlayerConfig>::cst_decode(*wrap).into()
         }
     }
-    impl CstDecode<crate::api::GstVideoPlayer> for *mut wire_cst_gst_video_player {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> crate::api::GstVideoPlayer {
-            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
-            CstDecode::<crate::api::GstVideoPlayer>::cst_decode(*wrap).into()
-        }
-    }
     impl CstDecode<crate::api::GstPlayerConfig> for wire_cst_gst_player_config {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> crate::api::GstPlayerConfig {
@@ -464,12 +593,6 @@ mod io {
                 max_queue_size: self.max_queue_size.cst_decode(),
                 enable_audio: self.enable_audio.cst_decode(),
             }
-        }
-    }
-    impl CstDecode<crate::api::GstVideoPlayer> for wire_cst_gst_video_player {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> crate::api::GstVideoPlayer {
-            crate::api::GstVideoPlayer {}
         }
     }
     impl CstDecode<Vec<u8>> for *mut wire_cst_list_prim_u_8_strict {
@@ -496,51 +619,42 @@ mod io {
             Self::new_with_null_ptr()
         }
     }
-    impl NewWithNullPtr for wire_cst_gst_video_player {
-        fn new_with_null_ptr() -> Self {
-            Self {}
-        }
-    }
-    impl Default for wire_cst_gst_video_player {
-        fn default() -> Self {
-            Self::new_with_null_ptr()
-        }
-    }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_media_gst_wire__crate__api__gst_video_player_get_texture_id(
+    pub extern "C" fn frbgen_media_gst_wire__crate__api__GstVideoPlayer_get_texture_id(
         port_: i64,
-        that: *mut wire_cst_gst_video_player,
+        that: usize,
     ) {
-        wire__crate__api__gst_video_player_get_texture_id_impl(port_, that)
+        wire__crate__api__GstVideoPlayer_get_texture_id_impl(port_, that)
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_media_gst_wire__crate__api__gst_video_player_new(
-        config: *mut wire_cst_gst_player_config,
-    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
-        wire__crate__api__gst_video_player_new_impl(config)
-    }
-
-    #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_media_gst_wire__crate__api__gst_video_player_set_size(
+    pub extern "C" fn frbgen_media_gst_wire__crate__api__GstVideoPlayer_new(
         port_: i64,
-        that: *mut wire_cst_gst_video_player,
+        config: *mut wire_cst_gst_player_config,
+    ) {
+        wire__crate__api__GstVideoPlayer_new_impl(port_, config)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_media_gst_wire__crate__api__GstVideoPlayer_set_size(
+        port_: i64,
+        that: usize,
         width: i32,
         height: i32,
     ) {
-        wire__crate__api__gst_video_player_set_size_impl(port_, that, width, height)
+        wire__crate__api__GstVideoPlayer_set_size_impl(port_, that, width, height)
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_media_gst_wire__crate__api__gst_video_player_set_source(
+    pub extern "C" fn frbgen_media_gst_wire__crate__api__GstVideoPlayer_set_source(
         port_: i64,
-        that: *mut wire_cst_gst_video_player,
+        that: usize,
         uri: *mut wire_cst_list_prim_u_8_strict,
-        sync: bool,
+        is_sync: bool,
         custom_pipeline: *mut wire_cst_list_prim_u_8_strict,
     ) {
-        wire__crate__api__gst_video_player_set_source_impl(port_, that, uri, sync, custom_pipeline)
+        wire__crate__api__GstVideoPlayer_set_source_impl(port_, that, uri, is_sync, custom_pipeline)
     }
 
     #[unsafe(no_mangle)]
@@ -549,18 +663,28 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_media_gst_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGstVideoPlayer(
+        ptr: *const std::ffi::c_void,
+    ) {
+        unsafe {
+            StdArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GstVideoPlayer>>::increment_strong_count(ptr as _);
+        }
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_media_gst_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGstVideoPlayer(
+        ptr: *const std::ffi::c_void,
+    ) {
+        unsafe {
+            StdArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GstVideoPlayer>>::decrement_strong_count(ptr as _);
+        }
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_media_gst_cst_new_box_autoadd_gst_player_config(
     ) -> *mut wire_cst_gst_player_config {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(
             wire_cst_gst_player_config::new_with_null_ptr(),
-        )
-    }
-
-    #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_media_gst_cst_new_box_autoadd_gst_video_player(
-    ) -> *mut wire_cst_gst_video_player {
-        flutter_rust_bridge::for_generated::new_leak_box_ptr(
-            wire_cst_gst_video_player::new_with_null_ptr(),
         )
     }
 
@@ -585,9 +709,6 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
-    pub struct wire_cst_gst_video_player {}
-    #[repr(C)]
-    #[derive(Clone, Copy)]
     pub struct wire_cst_list_prim_u_8_strict {
         ptr: *mut u8,
         len: i32,
@@ -605,6 +726,7 @@ mod web {
     // Section: imports
 
     use super::*;
+    use crate::api::*;
     use flutter_rust_bridge::for_generated::byteorder::{
         NativeEndian, ReadBytesExt, WriteBytesExt,
     };
@@ -647,23 +769,6 @@ mod web {
             }
         }
     }
-    impl CstDecode<crate::api::GstVideoPlayer>
-        for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
-    {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> crate::api::GstVideoPlayer {
-            let self_ = self
-                .dyn_into::<flutter_rust_bridge::for_generated::js_sys::Array>()
-                .unwrap();
-            assert_eq!(
-                self_.length(),
-                0,
-                "Expected 0 elements, got {}",
-                self_.length()
-            );
-            crate::api::GstVideoPlayer {}
-        }
-    }
     impl CstDecode<Vec<u8>> for Box<[u8]> {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> Vec<u8> {
@@ -674,6 +779,35 @@ mod web {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> Option<String> {
             self.map(CstDecode::cst_decode)
+        }
+    }
+    impl CstDecode<GstVideoPlayer> for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> GstVideoPlayer {
+            flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(CstDecode::<
+                RustOpaqueNom<
+                    flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GstVideoPlayer>,
+                >,
+            >::cst_decode(
+                self
+            ))
+        }
+    }
+    impl
+        CstDecode<
+            RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GstVideoPlayer>>,
+        > for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(
+            self,
+        ) -> RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GstVideoPlayer>>
+        {
+            #[cfg(target_pointer_width = "64")]
+            {
+                compile_error!("64-bit pointers are not supported.");
+            }
+            unsafe { decode_rust_opaque_nom((self.as_f64().unwrap() as usize) as _) }
         }
     }
     impl CstDecode<String> for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue {
@@ -714,41 +848,48 @@ mod web {
             self.unchecked_into_f64() as _
         }
     }
+    impl CstDecode<usize> for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> usize {
+            ::std::convert::TryInto::<u64>::try_into(self).unwrap() as _
+        }
+    }
 
     #[wasm_bindgen]
-    pub fn wire__crate__api__gst_video_player_get_texture_id(
+    pub fn wire__crate__api__GstVideoPlayer_get_texture_id(
         port_: flutter_rust_bridge::for_generated::MessagePort,
         that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
     ) {
-        wire__crate__api__gst_video_player_get_texture_id_impl(port_, that)
+        wire__crate__api__GstVideoPlayer_get_texture_id_impl(port_, that)
     }
 
     #[wasm_bindgen]
-    pub fn wire__crate__api__gst_video_player_new(
+    pub fn wire__crate__api__GstVideoPlayer_new(
+        port_: flutter_rust_bridge::for_generated::MessagePort,
         config: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
-    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
-        wire__crate__api__gst_video_player_new_impl(config)
+    ) {
+        wire__crate__api__GstVideoPlayer_new_impl(port_, config)
     }
 
     #[wasm_bindgen]
-    pub fn wire__crate__api__gst_video_player_set_size(
+    pub fn wire__crate__api__GstVideoPlayer_set_size(
         port_: flutter_rust_bridge::for_generated::MessagePort,
         that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
         width: i32,
         height: i32,
     ) {
-        wire__crate__api__gst_video_player_set_size_impl(port_, that, width, height)
+        wire__crate__api__GstVideoPlayer_set_size_impl(port_, that, width, height)
     }
 
     #[wasm_bindgen]
-    pub fn wire__crate__api__gst_video_player_set_source(
+    pub fn wire__crate__api__GstVideoPlayer_set_source(
         port_: flutter_rust_bridge::for_generated::MessagePort,
         that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
         uri: String,
-        sync: bool,
+        is_sync: bool,
         custom_pipeline: Option<String>,
     ) {
-        wire__crate__api__gst_video_player_set_source_impl(port_, that, uri, sync, custom_pipeline)
+        wire__crate__api__GstVideoPlayer_set_source_impl(port_, that, uri, is_sync, custom_pipeline)
     }
 
     #[wasm_bindgen]
@@ -756,6 +897,24 @@ mod web {
         port_: flutter_rust_bridge::for_generated::MessagePort,
     ) {
         wire__crate__api__init_gstreamer_impl(port_)
+    }
+
+    #[wasm_bindgen]
+    pub fn rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGstVideoPlayer(
+        ptr: *const std::ffi::c_void,
+    ) {
+        unsafe {
+            StdArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GstVideoPlayer>>::increment_strong_count(ptr as _);
+        }
+    }
+
+    #[wasm_bindgen]
+    pub fn rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGstVideoPlayer(
+        ptr: *const std::ffi::c_void,
+    ) {
+        unsafe {
+            StdArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GstVideoPlayer>>::decrement_strong_count(ptr as _);
+        }
     }
 }
 #[cfg(target_family = "wasm")]

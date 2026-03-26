@@ -8,18 +8,18 @@ pub struct GstPlayerConfig {
 }
 
 pub struct GstVideoPlayer {
-    // 내부적으로 GStreamer 파이프라인이나 상태를 관리할 구조체
-    // 실제 구현에서는 Arc<Mutex<...>> 등을 사용하여 안전하게 관리해야 함
+    player: crate::player_instance::SharedPlayerInstance,
 }
 
 impl GstVideoPlayer {
-    #[frb(sync)]
     pub fn new(config: GstPlayerConfig) -> Self {
         // TODO: GStreamer 초기화 및 파이프라인 준비
-        Self {}
+        Self {
+            player: crate::player_instance::PlayerInstance::new(),
+        }
     }
 
-    pub fn set_source(&self, uri: String, sync: bool, custom_pipeline: Option<String>) {
+    pub fn set_source(&self, uri: String, is_sync: bool, custom_pipeline: Option<String>) {
         // TODO: uridecodebin 설정 및 파이프라인 시작
     }
 

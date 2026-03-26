@@ -26,6 +26,6 @@ dev_dependencies:
   test: ^1.25.6
   # Rust 크레이트를 flutter run/build 시 자동으로 컴파일·링킹하기 위한 빌드 훅 툴체인
   # hook/build.dart 에서 RustBuilder를 통해 사용됩니다. [ENV.md 섹션 2 참조]
-  ffigen: ^8.0.0
+  ffigen: ^20.1.1
   integration_test:
     sdk: flutter
