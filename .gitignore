@@ -9,6 +9,7 @@ pubspec.lock
 # Rust 관련
 rust/target/
 rust/Cargo.lock
+rust/.cargo/config.toml
 
 # FRBGenerated
 lib/src/rust/

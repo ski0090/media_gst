@@ -11,13 +11,13 @@
   - `pubspec.yaml`에 `native_toolchain_rust` 추가
   - `flutter_rust_bridge_codegen` 초기화
 
-- [ ] `chore: Rust Cargo.toml 크레이트 의존성 버전 고정`
+- [x] `chore: Rust Cargo.toml 크레이트 의존성 버전 고정`
   - `tokio`, `uuid`, `anyhow` 버전 명시
   - feature flag (`tokio/full`) 추가
   - `[build-dependencies]`에 `flutter_rust_bridge` 추가
 
-- [ ] `feat(rust): build.rs 생성 — FRB 코드 생성 및 GStreamer 링크 설정`
-  - `rust/build.rs` 신규
+- [x] `feat(rust): build.rs 생성 — FRB 코드 생성 및 GStreamer 링크 설정`
+  - `rust/build.rs` 신규 (현 코어 및 브릿지로 분리 구현 완료)
   - `flutter_rust_bridge::codegen::generate()` 호출로 Dart 바인딩 자동 생성
   - Windows: `cargo:rustc-link-search` / `rustc-link-lib`로 GStreamer SDK 경로 명시
   - 플랫폼별 `#[cfg]` 분기 처리
