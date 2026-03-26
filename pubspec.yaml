@@ -1,9 +1,10 @@
 name: media_gst
-description: GStreamer 기반 Flutter 미디어 플레이어 플러그인 (flutter_rust_bridge v2)
+description: GStreamer 기반 Flutter 미디어 플레이어 플러그인 (flutter_rust_bridge v2). 고성능 Zero-copy 비디오 렌더링을 지원합니다.
 version: 1.0.0
+homepage: https://github.com/ski0090/media_gst
+repository: https://github.com/ski0090/media_gst
+issue_tracker: https://github.com/ski0090/media_gst/issues
 publish_to: none
-# repository: https://github.com/my_org/my_repo
-
 environment:
   sdk: ^3.11.1
   flutter: ">=3.10.0"
