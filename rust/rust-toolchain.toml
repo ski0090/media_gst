@@ -1,7 +1,7 @@
 [toolchain]
 # 경고: `stable`, `beta`, `nightly` 단독 사용 금지 — 재현 가능한 빌드를 위해 버전을 고정합니다.
 # [native_toolchain_rust docs 권고사항]
-channel = "1.86.0"
+channel = "1.92.0"
 
 # 지원하는 크로스 컴파일 타겟 목록
 # SPEC.md 섹션 2.2 "비디오 출력 (Sink) 구성" 에 따른 플랫폼 지원 범위
