@@ -3,6 +3,10 @@ import 'dart:io';
 import 'package:hooks/hooks.dart';
 import 'package:native_toolchain_rust/native_toolchain_rust.dart';
 
+// HACK: Workaround for ffigen bug on Windows where libclang fails to find <stdbool.h>/<stdint.h>
+// because of missing MSVC/LLVM include paths, causing incorrect 'typedef bool' and pointer mappings.
+// This string replacement is extremely fragile and may break with future ffigen/FRB updates.
+// See: https://github.com/fzyzcjy/flutter_rust_bridge/issues/1381 / https://github.com/dart-lang/native/issues/1054
 void _patchFrbGenerated() {
   final f = File('lib/src/rust/frb_generated.io.dart');
   if (!f.existsSync()) return;
