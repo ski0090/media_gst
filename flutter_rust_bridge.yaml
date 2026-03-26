@@ -26,3 +26,4 @@ rust_root: rust/bridge/
 
 # 코드 생성 옵션
 full_dep: true
+dart3: true
