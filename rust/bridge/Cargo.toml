@@ -14,12 +14,12 @@ default = []
 [dependencies]
 # flutter_rust_bridge v2
 flutter_rust_bridge = "=2.11.1"
-anyhow = "1"
+anyhow = "=1.0.86"
 parking_lot = "0.12"
 log = "0.4"
 env_logger = "0.11"
-tokio = { version = "1.43.0", features = ["full"] }
-uuid = { version = "1.13.1", features = ["v4"] }
+tokio = { version = "=1.43.0", features = ["full"] }
+uuid = { version = "=1.13.1", features = ["v4"] }
 
 [build-dependencies]
 # flutter_rust_bridge v2
