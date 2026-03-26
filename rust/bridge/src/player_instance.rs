@@ -10,8 +10,8 @@ pub enum PlayerState {
 }
 
 pub struct PlayerInstance {
-    pub id: Uuid,
-    pub state: PlayerState,
+    id: Uuid,
+    state: PlayerState,
 }
 
 pub type SharedPlayerInstance = Arc<RwLock<PlayerInstance>>;
@@ -22,6 +22,10 @@ impl PlayerInstance {
             id: Uuid::new_v4(),
             state: PlayerState::Stop,
         }))
+    }
+
+    pub fn id(&self) -> Uuid {
+        self.id
     }
 
     pub fn set_state(&mut self, state: PlayerState) {
