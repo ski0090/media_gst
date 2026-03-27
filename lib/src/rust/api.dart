@@ -7,3 +7,5 @@ import 'frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 Future<String> helloFromRust() => RustLib.instance.api.crateApiHelloFromRust();
+
+Future<String> getVideoSink() => RustLib.instance.api.crateApiGetVideoSink();

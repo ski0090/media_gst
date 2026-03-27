@@ -1,0 +1,9 @@
+# GStreamer SDK 설치 경로에 따른 커스텀 환경 변수 설정
+# README.md의 안내에 따라 이 파일을 config.toml로 이름을 변경하여 사용하십시오.
+
+[env]
+# Windows MSVC용 GStreamer SDK가 설치된 루트 디렉토리
+GSTREAMER_1_0_ROOT_MSVC_X86_64 = "C:\\gstreamer\\1.0\\msvc_x86_64"
+
+# pkg-config 경로 설정 (필요시)
+# PKG_CONFIG_PATH = "C:\\gstreamer\\1.0\\msvc_x86_64\\lib\\pkgconfig"
