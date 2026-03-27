@@ -1,16 +1,28 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:media_gst/media_gst.dart';
-import 'package:test/test.dart';
+import 'package:media_gst/media_gst_platform_interface.dart';
+import 'package:media_gst/media_gst_method_channel.dart';
+import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+
+class MockMediaGstPlatform
+    with MockPlatformInterfaceMixin
+    implements MediaGstPlatform {
+  @override
+  Future<String?> getPlatformVersion() => Future.value('42');
+}
 
 void main() {
-  group('A group of tests', () {
-    final awesome = Awesome();
+  final MediaGstPlatform initialPlatform = MediaGstPlatform.instance;
 
-    setUp(() {
-      // Additional setup goes here.
-    });
+  test('$MethodChannelMediaGst is the default instance', () {
+    expect(initialPlatform, isInstanceOf<MethodChannelMediaGst>());
+  });
 
-    test('First Test', () {
-      expect(awesome.isAwesome, isTrue);
-    });
+  test('getPlatformVersion', () async {
+    MediaGst mediaGstPlugin = MediaGst();
+    MockMediaGstPlatform fakePlatform = MockMediaGstPlatform();
+    MediaGstPlatform.instance = fakePlatform;
+
+    expect(await mediaGstPlugin.getPlatformVersion(), '42');
   });
 }

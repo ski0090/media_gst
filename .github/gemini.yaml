@@ -1,5 +1,0 @@
-model: "gemini-2.0-flash" # 또는 사용하는 모델
-system_instruction: "모든 답변은 한국어(Korean)로 작성해주세요. 코드 설명, 주석, 그리고 보고서 형식의 답변도 반드시 한국어를 사용하세요."
-
-review:
-  enabled: true

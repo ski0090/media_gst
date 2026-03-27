@@ -1,9 +1,14 @@
-/// Support for doing something awesome.
-///
-/// More dartdocs go here.
-library;
+// You have generated a new plugin project without specifying the `--platforms`
+// flag. A plugin project with no platform support was generated. To add a
+// platform, run `flutter create -t plugin --platforms <platforms> .` under the
+// same directory. You can also find a detailed instruction on how to add
+// platforms in the `pubspec.yaml` at
+// https://flutter.dev/to/pubspec-plugin-platforms.
 
-export 'src/media_gst_base.dart';
-export 'src/gst_video_player.dart';
+import 'media_gst_platform_interface.dart';
 
-// TODO: Export any libraries intended for clients of this package.
+class MediaGst {
+  Future<String?> getPlatformVersion() {
+    return MediaGstPlatform.instance.getPlatformVersion();
+  }
+}

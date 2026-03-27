@@ -1,4 +1,0 @@
-[env]
-# GStreamer MSVC SDK 경로를 pkg-config에 강제로 전달 (기존 vcpkg 경로 무시)
-PKG_CONFIG_PATH = { value = "C:\\Program Files\\gstreamer\\1.0\\msvc_x86_64\\lib\\pkgconfig", force = true }
-GSTREAMER_1_0_ROOT_MSVC_X86_64 = { value = "C:\\Program Files\\gstreamer\\1.0\\msvc_x86_64", force = true }
