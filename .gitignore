@@ -23,11 +23,25 @@ migrate_working_dir/
 # is commented out by default.
 #.vscode/
 
-# Flutter/Dart/Pub related
-# Libraries should not include pubspec.lock, per https://dart.dev/guides/libraries/private-files#pubspeclock.
+
+# Flutter/Dart 관련 추가
 /pubspec.lock
 **/doc/api/
 .dart_tool/
 .flutter-plugins-dependencies
 /build/
 /coverage/
+.packages
+.pub/
+.pub-cache/
+*.pyc
+__pycache__/
+
+# Rust 관련
+rust/target/
+rust/Cargo.lock
+rust/.cargo/config.toml
+
+
+# OS 관련
+Thumbs.db
