@@ -18,11 +18,11 @@ pub struct PlayerInstance {
 pub type SharedPlayerInstance = Arc<RwLock<PlayerInstance>>;
 
 impl PlayerInstance {
-    pub fn new() -> SharedPlayerInstance {
+    pub fn new(config: crate::media_core::GstPlayerConfig) -> SharedPlayerInstance {
         Arc::new(RwLock::new(Self {
             id: Uuid::new_v4(),
             state: PlayerState::Stop,
-            core_player: crate::media_core::Player::new(),
+            core_player: crate::media_core::Player::new(config),
         }))
     }
 

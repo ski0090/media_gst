@@ -3,7 +3,7 @@
 ## 1. 아키텍처 개요
 - **Frontend**: Flutter (UI 레이어 및 렌더링 레지스트리 관리)
 - **Backend Core (Rust Native)**:
-    - **`bridge`**: Flutter(FRB) 인터페이스 레이어 및 GStreamer 파이프라인 관리(`media_core` 모듈) 통합.
+    - **`bridge`**: Flutter(FRB) 인터페이스 레이어. 내부적으로 `media_core` 모듈이 통합되어 있으며, 기존의 독립된 core 크레이트 기능을 대체하여 GStreamer 파이프라인 관리 및 핵심 비즈니스 로직을 직접 처리함.
 - **Interface**: flutter_rust_bridge v2 (Zero-copy 데이터 전달 및 명령 제어)
 
 ## 2. GStreamer 파이프라인 설계

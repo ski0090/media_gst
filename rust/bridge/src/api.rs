@@ -1,21 +1,16 @@
 use flutter_rust_bridge::frb;
 
-pub struct GstPlayerConfig {
-    pub use_hardware_acceleration: bool,
-    pub pixel_format: String,
-    pub max_queue_size: i32,
-    pub enable_audio: bool,
-}
+pub use crate::media_core::GstPlayerConfig;
 
 pub struct GstVideoPlayer {
     player: crate::player_instance::SharedPlayerInstance,
 }
 
 impl GstVideoPlayer {
-    pub fn new(_config: GstPlayerConfig) -> Self {
+    pub fn new(config: GstPlayerConfig) -> Self {
         // TODO: GStreamer 초기화 및 파이프라인 준비
         Self {
-            player: crate::player_instance::PlayerInstance::new(),
+            player: crate::player_instance::PlayerInstance::new(config),
         }
     }
 
@@ -35,9 +30,9 @@ impl GstVideoPlayer {
 
 // Global initialization
 /// GStreamer 런타임을 초기화합니다.
-/// 실제 구현은 core 라이브러리(media_gst_core)에서 처리됩니다.
+/// 실제 구현은 media_core 모듈에서 처리됩니다.
 pub fn init_gstreamer() {
-    // core 라이브러리의 초기화 함수 호출
+    // media_core 모듈의 초기화 함수 호출
     if let Err(e) = crate::media_core::initialize() {
         log::error!("Failed to initialize GStreamer: {:?}", e);
     }
