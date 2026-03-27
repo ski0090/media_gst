@@ -5,7 +5,26 @@
 
 import 'frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
+import 'player_instance.dart';
 
-Future<String> helloFromRust() => RustLib.instance.api.crateApiHelloFromRust();
 
-Future<String> getVideoSink() => RustLib.instance.api.crateApiGetVideoSink();
+            
+
+            Future<String>  helloFromRust() => RustLib.instance.api.crateApiHelloFromRust();
+
+Future<String>  getVideoSink() => RustLib.instance.api.crateApiGetVideoSink();
+
+Future<PlayerInstance>  createPlayer() => RustLib.instance.api.crateApiCreatePlayer();
+
+Future<void>  setSource({required PlayerInstance player , required String uri }) => RustLib.instance.api.crateApiSetSource(player: player, uri: uri);
+
+Stream<PlayerEvent>  subscribePlayerEvents({required PlayerInstance player }) => RustLib.instance.api.crateApiSubscribePlayerEvents(player: player);
+
+Future<void>  play({required PlayerInstance player }) => RustLib.instance.api.crateApiPlay(player: player);
+
+Future<void>  pause({required PlayerInstance player }) => RustLib.instance.api.crateApiPause(player: player);
+
+Future<void>  stop({required PlayerInstance player }) => RustLib.instance.api.crateApiStop(player: player);
+
+            
+            

@@ -22,17 +22,17 @@
   - Windows: `cargo:rustc-link-search` / `rustc-link-lib`로 GStreamer SDK 경로 명시
   - 플랫폼별 `#[cfg]` 분기 처리
 
-- [ ] `docs: pubspec.yaml 패키지 설명 및 메타데이터 보완`
+- [x] `docs: pubspec.yaml 패키지 설명 및 메타데이터 보완`
   - `description`, `homepage`, `repository` 등 공개 정보 기입
 
 ---
 
 ## Phase 2 — Rust 코어: GStreamer 초기화 및 파이프라인
 
-- [ ] `feat(rust): GStreamer 초기화 및 로깅 설정`
+- [x] `feat(rust): GStreamer 초기화 및 로깅 설정`
   - `lib.rs` — `gst::init()`, `env_logger` 연동
 
-- [ ] `feat(rust): PlayerInstance 구조체 정의 (UUID, 상태 열거형)`
+- [x] `feat(rust): PlayerInstance 구조체 정의 (UUID, 상태 열거형)`
   - `player_instance.rs` 신규
   - `PlayerState(Play/Pause/Stop)`, `Arc<Mutex<>>` 래핑
 

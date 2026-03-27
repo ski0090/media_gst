@@ -7,269 +7,515 @@ import 'api.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'frb_generated.dart';
-import 'frb_generated.io.dart'
-    if (dart.library.js_interop) 'frb_generated.web.dart';
+import 'frb_generated.io.dart' if (dart.library.js_interop) 'frb_generated.web.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
+import 'player_instance.dart';
 
-/// Main entrypoint of the Rust API
-class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
-  @internal
-  static final instance = RustLib._();
 
-  RustLib._();
+                /// Main entrypoint of the Rust API
+                class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
+                  @internal
+                  static final instance = RustLib._();
 
-  /// Initialize flutter_rust_bridge
-  static Future<void> init({
-    RustLibApi? api,
-    BaseHandler? handler,
-    ExternalLibrary? externalLibrary,
-    bool forceSameCodegenVersion = true,
-  }) async {
-    await instance.initImpl(
-      api: api,
-      handler: handler,
-      externalLibrary: externalLibrary,
-      forceSameCodegenVersion: forceSameCodegenVersion,
-    );
-  }
+                  RustLib._();
 
-  /// Initialize flutter_rust_bridge in mock mode.
-  /// No libraries for FFI are loaded.
-  static void initMock({required RustLibApi api}) {
-    instance.initMockImpl(api: api);
-  }
+                  /// Initialize flutter_rust_bridge
+                  static Future<void> init({
+                    RustLibApi? api,
+                    BaseHandler? handler,
+                    ExternalLibrary? externalLibrary,
+                    bool forceSameCodegenVersion = true,
+                  }) async {
+                    await instance.initImpl(
+                      api: api,
+                      handler: handler,
+                      externalLibrary: externalLibrary,
+                      forceSameCodegenVersion: forceSameCodegenVersion,
+                    );
+                  }
 
-  /// Dispose flutter_rust_bridge
-  ///
-  /// The call to this function is optional, since flutter_rust_bridge (and everything else)
-  /// is automatically disposed when the app stops.
-  static void dispose() => instance.disposeImpl();
+                  /// Initialize flutter_rust_bridge in mock mode.
+                  /// No libraries for FFI are loaded.
+                  static void initMock({
+                    required RustLibApi api,
+                  }) {
+                    instance.initMockImpl(
+                      api: api,
+                    );
+                  }
 
-  @override
-  ApiImplConstructor<RustLibApiImpl, RustLibWire> get apiImplConstructor =>
-      RustLibApiImpl.new;
+                  /// Dispose flutter_rust_bridge
+                  ///
+                  /// The call to this function is optional, since flutter_rust_bridge (and everything else)
+                  /// is automatically disposed when the app stops.
+                  static void dispose() => instance.disposeImpl();
 
-  @override
-  WireConstructor<RustLibWire> get wireConstructor =>
-      RustLibWire.fromExternalLibrary;
+                  @override
+                  ApiImplConstructor<RustLibApiImpl, RustLibWire> get apiImplConstructor => RustLibApiImpl.new;
 
-  @override
-  Future<void> executeRustInitializers() async {
-    await api.crateApiInitApp();
-  }
+                  @override
+                  WireConstructor<RustLibWire> get wireConstructor => RustLibWire.fromExternalLibrary;
 
-  @override
-  ExternalLibraryLoaderConfig get defaultExternalLibraryLoaderConfig =>
-      kDefaultExternalLibraryLoaderConfig;
+                  @override
+                  Future<void> executeRustInitializers() async {
+                    await api.crateApiInitApp();
 
-  @override
-  String get codegenVersion => '2.11.1';
+                  }
 
-  @override
-  int get rustContentHash => -139141949;
+                  @override
+                  ExternalLibraryLoaderConfig get defaultExternalLibraryLoaderConfig => kDefaultExternalLibraryLoaderConfig;
 
-  static const kDefaultExternalLibraryLoaderConfig =
-      ExternalLibraryLoaderConfig(
-        stem: 'media_gst',
-        ioDirectory: 'rust/target/release/',
-        webPrefix: 'pkg/',
-      );
-}
+                  @override
+                  String get codegenVersion => '2.11.1';
 
-abstract class RustLibApi extends BaseApi {
-  Future<String> crateApiGetVideoSink();
+                  @override
+                  int get rustContentHash => -1793507413;
 
-  Future<String> crateApiHelloFromRust();
+                  static const kDefaultExternalLibraryLoaderConfig = ExternalLibraryLoaderConfig(
+                    stem: 'media_gst',
+                    ioDirectory: 'rust/target/release/',
+                    webPrefix: 'pkg/',
+                  );
+                }
+                
 
-  Future<void> crateApiInitApp();
-}
+                abstract class RustLibApi extends BaseApi {
+                  Future<PlayerInstance> crateApiCreatePlayer();
 
-class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
-  RustLibApiImpl({
-    required super.handler,
-    required super.wire,
-    required super.generalizedFrbRustBinding,
-    required super.portManager,
-  });
+Future<String> crateApiGetVideoSink();
 
-  @override
-  Future<String> crateApiGetVideoSink() {
-    return handler.executeNormal(
-      NormalTask(
-        callFfi: (port_) {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          pdeCallFfi(
-            generalizedFrbRustBinding,
-            serializer,
-            funcId: 1,
-            port: port_,
-          );
-        },
-        codec: SseCodec(
+Future<String> crateApiHelloFromRust();
+
+Future<void> crateApiInitApp();
+
+Future<void> crateApiPause({required PlayerInstance player });
+
+Future<void> crateApiPlay({required PlayerInstance player });
+
+Future<void> crateApiSetSource({required PlayerInstance player , required String uri });
+
+Future<void> crateApiStop({required PlayerInstance player });
+
+Stream<PlayerEvent> crateApiSubscribePlayerEvents({required PlayerInstance player });
+
+RustArcIncrementStrongCountFnType get rust_arc_increment_strong_count_PlayerInstance;
+
+RustArcDecrementStrongCountFnType get rust_arc_decrement_strong_count_PlayerInstance;
+
+CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_PlayerInstancePtr;
+
+
+                }
+                
+
+                class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
+                  RustLibApiImpl({
+                    required super.handler,
+                    required super.wire,
+                    required super.generalizedFrbRustBinding,
+                    required super.portManager,
+                  });
+
+                  @override Future<PlayerInstance> crateApiCreatePlayer()  { return handler.executeNormal(NormalTask(
+            callFfi: (port_) {
+              
+            final serializer = SseSerializer(generalizedFrbRustBinding);
+            pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 1, port: port_);
+            
+            },
+            codec: 
+        SseCodec(
+          decodeSuccessData: sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPlayerInstance,
+          decodeErrorData: null,
+        )
+        ,
+            constMeta: kCrateApiCreatePlayerConstMeta,
+            argValues: [],
+            apiImpl: this,
+        )); }
+
+
+        TaskConstMeta get kCrateApiCreatePlayerConstMeta => const TaskConstMeta(
+            debugName: "create_player",
+            argNames: [],
+        );
+        
+
+@override Future<String> crateApiGetVideoSink()  { return handler.executeNormal(NormalTask(
+            callFfi: (port_) {
+              
+            final serializer = SseSerializer(generalizedFrbRustBinding);
+            pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 2, port: port_);
+            
+            },
+            codec: 
+        SseCodec(
           decodeSuccessData: sse_decode_String,
           decodeErrorData: null,
-        ),
-        constMeta: kCrateApiGetVideoSinkConstMeta,
-        argValues: [],
-        apiImpl: this,
-      ),
-    );
-  }
+        )
+        ,
+            constMeta: kCrateApiGetVideoSinkConstMeta,
+            argValues: [],
+            apiImpl: this,
+        )); }
 
-  TaskConstMeta get kCrateApiGetVideoSinkConstMeta =>
-      const TaskConstMeta(debugName: "get_video_sink", argNames: []);
 
-  @override
-  Future<String> crateApiHelloFromRust() {
-    return handler.executeNormal(
-      NormalTask(
-        callFfi: (port_) {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          pdeCallFfi(
-            generalizedFrbRustBinding,
-            serializer,
-            funcId: 2,
-            port: port_,
-          );
-        },
-        codec: SseCodec(
+        TaskConstMeta get kCrateApiGetVideoSinkConstMeta => const TaskConstMeta(
+            debugName: "get_video_sink",
+            argNames: [],
+        );
+        
+
+@override Future<String> crateApiHelloFromRust()  { return handler.executeNormal(NormalTask(
+            callFfi: (port_) {
+              
+            final serializer = SseSerializer(generalizedFrbRustBinding);
+            pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 3, port: port_);
+            
+            },
+            codec: 
+        SseCodec(
           decodeSuccessData: sse_decode_String,
           decodeErrorData: null,
-        ),
-        constMeta: kCrateApiHelloFromRustConstMeta,
-        argValues: [],
-        apiImpl: this,
-      ),
-    );
-  }
+        )
+        ,
+            constMeta: kCrateApiHelloFromRustConstMeta,
+            argValues: [],
+            apiImpl: this,
+        )); }
 
-  TaskConstMeta get kCrateApiHelloFromRustConstMeta =>
-      const TaskConstMeta(debugName: "hello_from_rust", argNames: []);
 
-  @override
-  Future<void> crateApiInitApp() {
-    return handler.executeNormal(
-      NormalTask(
-        callFfi: (port_) {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          pdeCallFfi(
-            generalizedFrbRustBinding,
-            serializer,
-            funcId: 3,
-            port: port_,
-          );
-        },
-        codec: SseCodec(
+        TaskConstMeta get kCrateApiHelloFromRustConstMeta => const TaskConstMeta(
+            debugName: "hello_from_rust",
+            argNames: [],
+        );
+        
+
+@override Future<void> crateApiInitApp()  { return handler.executeNormal(NormalTask(
+            callFfi: (port_) {
+              
+            final serializer = SseSerializer(generalizedFrbRustBinding);
+            pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 4, port: port_);
+            
+            },
+            codec: 
+        SseCodec(
           decodeSuccessData: sse_decode_unit,
           decodeErrorData: null,
-        ),
-        constMeta: kCrateApiInitAppConstMeta,
-        argValues: [],
-        apiImpl: this,
-      ),
-    );
-  }
+        )
+        ,
+            constMeta: kCrateApiInitAppConstMeta,
+            argValues: [],
+            apiImpl: this,
+        )); }
 
-  TaskConstMeta get kCrateApiInitAppConstMeta =>
-      const TaskConstMeta(debugName: "init_app", argNames: []);
 
-  @protected
-  String dco_decode_String(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return raw as String;
-  }
+        TaskConstMeta get kCrateApiInitAppConstMeta => const TaskConstMeta(
+            debugName: "init_app",
+            argNames: [],
+        );
+        
 
-  @protected
-  Uint8List dco_decode_list_prim_u_8_strict(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return raw as Uint8List;
-  }
+@override Future<void> crateApiPause({required PlayerInstance player })  { return handler.executeNormal(NormalTask(
+            callFfi: (port_) {
+              
+            final serializer = SseSerializer(generalizedFrbRustBinding);sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPlayerInstance(player, serializer);
+            pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 5, port: port_);
+            
+            },
+            codec: 
+        SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: sse_decode_String,
+        )
+        ,
+            constMeta: kCrateApiPauseConstMeta,
+            argValues: [player],
+            apiImpl: this,
+        )); }
 
-  @protected
-  int dco_decode_u_8(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return raw as int;
-  }
 
-  @protected
-  void dco_decode_unit(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return;
-  }
+        TaskConstMeta get kCrateApiPauseConstMeta => const TaskConstMeta(
+            debugName: "pause",
+            argNames: ["player"],
+        );
+        
 
-  @protected
-  String sse_decode_String(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var inner = sse_decode_list_prim_u_8_strict(deserializer);
-    return utf8.decoder.convert(inner);
-  }
+@override Future<void> crateApiPlay({required PlayerInstance player })  { return handler.executeNormal(NormalTask(
+            callFfi: (port_) {
+              
+            final serializer = SseSerializer(generalizedFrbRustBinding);sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPlayerInstance(player, serializer);
+            pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 6, port: port_);
+            
+            },
+            codec: 
+        SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: sse_decode_String,
+        )
+        ,
+            constMeta: kCrateApiPlayConstMeta,
+            argValues: [player],
+            apiImpl: this,
+        )); }
 
-  @protected
-  Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var len_ = sse_decode_i_32(deserializer);
-    return deserializer.buffer.getUint8List(len_);
-  }
 
-  @protected
-  int sse_decode_u_8(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return deserializer.buffer.getUint8();
-  }
+        TaskConstMeta get kCrateApiPlayConstMeta => const TaskConstMeta(
+            debugName: "play",
+            argNames: ["player"],
+        );
+        
 
-  @protected
-  void sse_decode_unit(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-  }
+@override Future<void> crateApiSetSource({required PlayerInstance player , required String uri })  { return handler.executeNormal(NormalTask(
+            callFfi: (port_) {
+              
+            final serializer = SseSerializer(generalizedFrbRustBinding);sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPlayerInstance(player, serializer);
+sse_encode_String(uri, serializer);
+            pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 7, port: port_);
+            
+            },
+            codec: 
+        SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: sse_decode_String,
+        )
+        ,
+            constMeta: kCrateApiSetSourceConstMeta,
+            argValues: [player, uri],
+            apiImpl: this,
+        )); }
 
-  @protected
-  int sse_decode_i_32(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return deserializer.buffer.getInt32();
-  }
 
-  @protected
-  bool sse_decode_bool(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return deserializer.buffer.getUint8() != 0;
-  }
+        TaskConstMeta get kCrateApiSetSourceConstMeta => const TaskConstMeta(
+            debugName: "set_source",
+            argNames: ["player", "uri"],
+        );
+        
 
-  @protected
-  void sse_encode_String(String self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_list_prim_u_8_strict(utf8.encoder.convert(self), serializer);
-  }
+@override Future<void> crateApiStop({required PlayerInstance player })  { return handler.executeNormal(NormalTask(
+            callFfi: (port_) {
+              
+            final serializer = SseSerializer(generalizedFrbRustBinding);sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPlayerInstance(player, serializer);
+            pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 8, port: port_);
+            
+            },
+            codec: 
+        SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: sse_decode_String,
+        )
+        ,
+            constMeta: kCrateApiStopConstMeta,
+            argValues: [player],
+            apiImpl: this,
+        )); }
 
-  @protected
-  void sse_encode_list_prim_u_8_strict(
-    Uint8List self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_i_32(self.length, serializer);
-    serializer.buffer.putUint8List(self);
-  }
 
-  @protected
-  void sse_encode_u_8(int self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    serializer.buffer.putUint8(self);
-  }
+        TaskConstMeta get kCrateApiStopConstMeta => const TaskConstMeta(
+            debugName: "stop",
+            argNames: ["player"],
+        );
+        
 
-  @protected
-  void sse_encode_unit(void self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-  }
+@override Stream<PlayerEvent> crateApiSubscribePlayerEvents({required PlayerInstance player })  { 
+            final sink = RustStreamSink<PlayerEvent>();
+            unawaited(handler.executeNormal(NormalTask(
+            callFfi: (port_) {
+              
+            final serializer = SseSerializer(generalizedFrbRustBinding);sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPlayerInstance(player, serializer);
+sse_encode_StreamSink_player_event_Sse(sink, serializer);
+            pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 9, port: port_);
+            
+            },
+            codec: 
+        SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: sse_decode_String,
+        )
+        ,
+            constMeta: kCrateApiSubscribePlayerEventsConstMeta,
+            argValues: [player, sink],
+            apiImpl: this,
+        )));
+            return sink.stream;
+             }
 
-  @protected
-  void sse_encode_i_32(int self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    serializer.buffer.putInt32(self);
-  }
 
-  @protected
-  void sse_encode_bool(bool self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    serializer.buffer.putUint8(self ? 1 : 0);
-  }
-}
+        TaskConstMeta get kCrateApiSubscribePlayerEventsConstMeta => const TaskConstMeta(
+            debugName: "subscribe_player_events",
+            argNames: ["player", "sink"],
+        );
+        
+
+RustArcIncrementStrongCountFnType get rust_arc_increment_strong_count_PlayerInstance => wire.rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPlayerInstance;
+
+RustArcDecrementStrongCountFnType get rust_arc_decrement_strong_count_PlayerInstance => wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPlayerInstance;
+
+
+
+                  @protected AnyhowException dco_decode_AnyhowException(dynamic raw){ // Codec=Dco (DartCObject based), see doc to use other codecs
+return AnyhowException(raw as String); }
+
+@protected PlayerInstance dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPlayerInstance(dynamic raw){ // Codec=Dco (DartCObject based), see doc to use other codecs
+return PlayerInstanceImpl.frbInternalDcoDecode(raw as List<dynamic>); }
+
+@protected PlayerInstance dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPlayerInstance(dynamic raw){ // Codec=Dco (DartCObject based), see doc to use other codecs
+return PlayerInstanceImpl.frbInternalDcoDecode(raw as List<dynamic>); }
+
+@protected PlayerInstance dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPlayerInstance(dynamic raw){ // Codec=Dco (DartCObject based), see doc to use other codecs
+return PlayerInstanceImpl.frbInternalDcoDecode(raw as List<dynamic>); }
+
+@protected RustStreamSink<PlayerEvent> dco_decode_StreamSink_player_event_Sse(dynamic raw){ // Codec=Dco (DartCObject based), see doc to use other codecs
+throw UnimplementedError(); }
+
+@protected String dco_decode_String(dynamic raw){ // Codec=Dco (DartCObject based), see doc to use other codecs
+return raw as String; }
+
+@protected int dco_decode_i_32(dynamic raw){ // Codec=Dco (DartCObject based), see doc to use other codecs
+return raw as int; }
+
+@protected Uint8List dco_decode_list_prim_u_8_strict(dynamic raw){ // Codec=Dco (DartCObject based), see doc to use other codecs
+return raw as Uint8List; }
+
+@protected PlayerEvent dco_decode_player_event(dynamic raw){ // Codec=Dco (DartCObject based), see doc to use other codecs
+switch (raw[0]) {
+                case 0: return PlayerEvent_StateChanged(dco_decode_player_state(raw[1]),);
+case 1: return PlayerEvent_Error(dco_decode_String(raw[1]),);
+case 2: return PlayerEvent_EndOfStream();
+case 3: return PlayerEvent_Buffering(dco_decode_i_32(raw[1]),);
+case 4: return PlayerEvent_ClockLost();
+                default: throw Exception("unreachable");
+            } }
+
+@protected PlayerState dco_decode_player_state(dynamic raw){ // Codec=Dco (DartCObject based), see doc to use other codecs
+return PlayerState.values[raw as int]; }
+
+@protected int dco_decode_u_8(dynamic raw){ // Codec=Dco (DartCObject based), see doc to use other codecs
+return raw as int; }
+
+@protected void dco_decode_unit(dynamic raw){ // Codec=Dco (DartCObject based), see doc to use other codecs
+return; }
+
+@protected BigInt dco_decode_usize(dynamic raw){ // Codec=Dco (DartCObject based), see doc to use other codecs
+return dcoDecodeU64(raw); }
+
+@protected AnyhowException sse_decode_AnyhowException(SseDeserializer deserializer){ // Codec=Sse (Serialization based), see doc to use other codecs
+var inner = sse_decode_String(deserializer);
+        return AnyhowException(inner); }
+
+@protected PlayerInstance sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPlayerInstance(SseDeserializer deserializer){ // Codec=Sse (Serialization based), see doc to use other codecs
+return PlayerInstanceImpl.frbInternalSseDecode(sse_decode_usize(deserializer), sse_decode_i_32(deserializer)); }
+
+@protected PlayerInstance sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPlayerInstance(SseDeserializer deserializer){ // Codec=Sse (Serialization based), see doc to use other codecs
+return PlayerInstanceImpl.frbInternalSseDecode(sse_decode_usize(deserializer), sse_decode_i_32(deserializer)); }
+
+@protected PlayerInstance sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPlayerInstance(SseDeserializer deserializer){ // Codec=Sse (Serialization based), see doc to use other codecs
+return PlayerInstanceImpl.frbInternalSseDecode(sse_decode_usize(deserializer), sse_decode_i_32(deserializer)); }
+
+@protected RustStreamSink<PlayerEvent> sse_decode_StreamSink_player_event_Sse(SseDeserializer deserializer){ // Codec=Sse (Serialization based), see doc to use other codecs
+throw UnimplementedError('Unreachable ()'); }
+
+@protected String sse_decode_String(SseDeserializer deserializer){ // Codec=Sse (Serialization based), see doc to use other codecs
+var inner = sse_decode_list_prim_u_8_strict(deserializer);
+        return utf8.decoder.convert(inner); }
+
+@protected int sse_decode_i_32(SseDeserializer deserializer){ // Codec=Sse (Serialization based), see doc to use other codecs
+return deserializer.buffer.getInt32(); }
+
+@protected Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer){ // Codec=Sse (Serialization based), see doc to use other codecs
+var len_ = sse_decode_i_32(deserializer);
+                return deserializer.buffer.getUint8List(len_); }
+
+@protected PlayerEvent sse_decode_player_event(SseDeserializer deserializer){ // Codec=Sse (Serialization based), see doc to use other codecs
+
+            var tag_ = sse_decode_i_32(deserializer);
+            switch (tag_) { case 0: var var_field0 = sse_decode_player_state(deserializer);
+return PlayerEvent_StateChanged(var_field0);case 1: var var_field0 = sse_decode_String(deserializer);
+return PlayerEvent_Error(var_field0);case 2: return PlayerEvent_EndOfStream();case 3: var var_field0 = sse_decode_i_32(deserializer);
+return PlayerEvent_Buffering(var_field0);case 4: return PlayerEvent_ClockLost(); default: throw UnimplementedError(''); }
+             }
+
+@protected PlayerState sse_decode_player_state(SseDeserializer deserializer){ // Codec=Sse (Serialization based), see doc to use other codecs
+var inner = sse_decode_i_32(deserializer);
+        return PlayerState.values[inner]; }
+
+@protected int sse_decode_u_8(SseDeserializer deserializer){ // Codec=Sse (Serialization based), see doc to use other codecs
+return deserializer.buffer.getUint8(); }
+
+@protected void sse_decode_unit(SseDeserializer deserializer){ // Codec=Sse (Serialization based), see doc to use other codecs
+ }
+
+@protected BigInt sse_decode_usize(SseDeserializer deserializer){ // Codec=Sse (Serialization based), see doc to use other codecs
+return deserializer.buffer.getBigUint64(); }
+
+@protected bool sse_decode_bool(SseDeserializer deserializer){ // Codec=Sse (Serialization based), see doc to use other codecs
+return deserializer.buffer.getUint8() != 0; }
+
+@protected void sse_encode_AnyhowException(AnyhowException self, SseSerializer serializer){ // Codec=Sse (Serialization based), see doc to use other codecs
+sse_encode_String(self.message, serializer); }
+
+@protected void sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPlayerInstance(PlayerInstance self, SseSerializer serializer){ // Codec=Sse (Serialization based), see doc to use other codecs
+sse_encode_usize((self as PlayerInstanceImpl).frbInternalSseEncode(move: true), serializer); }
+
+@protected void sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPlayerInstance(PlayerInstance self, SseSerializer serializer){ // Codec=Sse (Serialization based), see doc to use other codecs
+sse_encode_usize((self as PlayerInstanceImpl).frbInternalSseEncode(move: false), serializer); }
+
+@protected void sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPlayerInstance(PlayerInstance self, SseSerializer serializer){ // Codec=Sse (Serialization based), see doc to use other codecs
+sse_encode_usize((self as PlayerInstanceImpl).frbInternalSseEncode(move: null), serializer); }
+
+@protected void sse_encode_StreamSink_player_event_Sse(RustStreamSink<PlayerEvent> self, SseSerializer serializer){ // Codec=Sse (Serialization based), see doc to use other codecs
+sse_encode_String(self.setupAndSerialize(codec: SseCodec(
+            decodeSuccessData: sse_decode_player_event,
+            decodeErrorData: sse_decode_AnyhowException,
+        )), serializer); }
+
+@protected void sse_encode_String(String self, SseSerializer serializer){ // Codec=Sse (Serialization based), see doc to use other codecs
+sse_encode_list_prim_u_8_strict(utf8.encoder.convert(self), serializer); }
+
+@protected void sse_encode_i_32(int self, SseSerializer serializer){ // Codec=Sse (Serialization based), see doc to use other codecs
+serializer.buffer.putInt32(self); }
+
+@protected void sse_encode_list_prim_u_8_strict(Uint8List self, SseSerializer serializer){ // Codec=Sse (Serialization based), see doc to use other codecs
+sse_encode_i_32(self.length, serializer);
+                    serializer.buffer.putUint8List(self); }
+
+@protected void sse_encode_player_event(PlayerEvent self, SseSerializer serializer){ // Codec=Sse (Serialization based), see doc to use other codecs
+switch (self) { case PlayerEvent_StateChanged(field0: final field0): sse_encode_i_32(0, serializer); sse_encode_player_state(field0, serializer);
+case PlayerEvent_Error(field0: final field0): sse_encode_i_32(1, serializer); sse_encode_String(field0, serializer);
+case PlayerEvent_EndOfStream(): sse_encode_i_32(2, serializer); case PlayerEvent_Buffering(field0: final field0): sse_encode_i_32(3, serializer); sse_encode_i_32(field0, serializer);
+case PlayerEvent_ClockLost(): sse_encode_i_32(4, serializer);   } }
+
+@protected void sse_encode_player_state(PlayerState self, SseSerializer serializer){ // Codec=Sse (Serialization based), see doc to use other codecs
+sse_encode_i_32(self.index, serializer); }
+
+@protected void sse_encode_u_8(int self, SseSerializer serializer){ // Codec=Sse (Serialization based), see doc to use other codecs
+serializer.buffer.putUint8(self); }
+
+@protected void sse_encode_unit(void self, SseSerializer serializer){ // Codec=Sse (Serialization based), see doc to use other codecs
+ }
+
+@protected void sse_encode_usize(BigInt self, SseSerializer serializer){ // Codec=Sse (Serialization based), see doc to use other codecs
+serializer.buffer.putBigUint64(self); }
+
+@protected void sse_encode_bool(bool self, SseSerializer serializer){ // Codec=Sse (Serialization based), see doc to use other codecs
+serializer.buffer.putUint8(self ? 1 : 0); }
+                }
+                
+
+            @sealed class PlayerInstanceImpl extends RustOpaque implements PlayerInstance {
+                // Not to be used by end users
+                PlayerInstanceImpl.frbInternalDcoDecode(List<dynamic> wire):
+                    super.frbInternalDcoDecode(wire, _kStaticData);
+
+                // Not to be used by end users
+                PlayerInstanceImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative):
+                    super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+                static final _kStaticData = RustArcStaticData(
+                    rustArcIncrementStrongCount: RustLib.instance.api.rust_arc_increment_strong_count_PlayerInstance,
+                    rustArcDecrementStrongCount: RustLib.instance.api.rust_arc_decrement_strong_count_PlayerInstance,
+                    rustArcDecrementStrongCountPtr: RustLib.instance.api.rust_arc_decrement_strong_count_PlayerInstancePtr,
+                );
+
+                
+            }
