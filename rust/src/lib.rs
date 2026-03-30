@@ -1,5 +1,6 @@
 pub mod api;
 pub mod player_instance;
+pub mod sink;
 mod frb_generated;
 
 /// 전역 로깅 및 GStreamer 초기화를 수행합니다.

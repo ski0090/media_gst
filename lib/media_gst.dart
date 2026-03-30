@@ -6,8 +6,15 @@
 // https://flutter.dev/to/pubspec-plugin-platforms.
 
 import 'media_gst_platform_interface.dart';
+import 'src/rust/frb_generated.dart';
 
 class MediaGst {
+  /// Initializes the GStreamer Rust backend.
+  /// Must be called before using any media playback features.
+  static Future<void> init() async {
+    await RustLib.init();
+  }
+
   Future<String?> getPlatformVersion() {
     return MediaGstPlatform.instance.getPlatformVersion();
   }

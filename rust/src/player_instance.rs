@@ -88,15 +88,8 @@ impl PlayerInstance {
             .build()
             .map_err(|e| anyhow::anyhow!("Failed to create uridecodebin: {}", e))?;
 
-        // 싱크 생성 (Windows: d3d11videosink, 기타: autovideosink)
-        #[cfg(target_os = "windows")]
-        let sink_name = "d3d11videosink";
-        #[cfg(not(target_os = "windows"))]
-        let sink_name = "autovideosink";
-
-        let sink = gst::ElementFactory::make(sink_name)
-            .build()
-            .map_err(|e| anyhow::anyhow!("Failed to create sink {}: {}", sink_name, e))?;
+        // 싱크 생성 (플랫폼별 조건부 컴파일 적용)
+        let sink = crate::sink::create_video_sink()?;
 
         pipeline.add_many([&source, &sink])?;
 
