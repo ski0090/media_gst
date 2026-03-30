@@ -32,19 +32,19 @@
 - [x] `feat(rust): GStreamer 초기화 및 로깅 설정`
   - `lib.rs` — `gst::init()`, `env_logger` 연동
 
-- [x] `feat(rust): PlayerInstance 구조체 정의 (UUID, 상태 열거형)`
+- [ ] `feat(rust): PlayerInstance 구조체 정의 (UUID, 상태 열거형)` (pending)
   - `player_instance.rs` 신규
   - `PlayerState(Play/Pause/Stop)`, `Arc<Mutex<>>` 래핑
 
-- [ ] `feat(rust): uridecodebin 기반 GStreamer 파이프라인 생성`
+- [x] `feat(rust): uridecodebin3 기반 GStreamer 파이프라인 생성`
   - `api.rs` — `set_source()` 구현
   - SPEC §2.1 RTSP/HLS/MP4 파이프라인 구성
 
-- [ ] `feat(rust): tokio broadcast 채널로 전체 채널 상태 동기화`
+- [ ] `feat(rust): tokio broadcast 채널로 전체 채널 상태 동기화` (pending)
   - `channel_manager.rs` 신규
   - SPEC §3.1 다채널 관리
 
-- [ ] `feat(rust): 플랫폼별 조건부 컴파일로 비디오 Sink 분기`
+- [x] `feat(rust): 플랫폼별 조건부 컴파일로 비디오 Sink 분기`
   - `sink/mod.rs`, `sink/windows.rs`, `sink/android.rs`
   - `#[cfg(target_os = "...")]` 활용 (AGENTS.md §2)
 
