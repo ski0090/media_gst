@@ -7,8 +7,8 @@
 
 import 'media_gst_platform_interface.dart';
 import 'src/rust/frb_generated.dart';
-export 'src/rust/api.dart';
-export 'src/rust/player_instance.dart';
+export 'src/rust/player_instance.dart' show PlayerState;
+export 'src/widgets/gst_player.dart';
 
 class MediaGst {
   /// Initializes the GStreamer Rust backend.

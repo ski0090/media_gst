@@ -20,12 +20,9 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
-  final List<String> _playerLogs = [];
-  final ScrollController _logScrollController = ScrollController();
   final _mediaGstPlugin = MediaGst();
   
-  PlayerInstance? _player;
-  StreamSubscription<PlayerEvent>? _eventSubscription;
+  final GstPlayerController _playerController = GstPlayerController();
   final TextEditingController _uriController = TextEditingController(
     text: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8',
   );
@@ -38,8 +35,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void dispose() {
-    _eventSubscription?.cancel();
-    _player?.dispose();
+    _playerController.dispose();
     _uriController.dispose();
     super.dispose();
   }
@@ -61,96 +57,58 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  void _addLog(String msg) {
-    if (!mounted) return;
-    setState(() {
-      final time = DateTime.now().toIso8601String().split('T')[1].substring(0, 8);
-      _playerLogs.add('[$time] $msg');
-    });
-    Future.delayed(const Duration(milliseconds: 50), () {
-      if (!mounted) return;
-      if (_logScrollController.hasClients) {
-        _logScrollController.animateTo(
-          _logScrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 200),
-          curve: Curves.easeOut,
-        );
-      }
-    });
-  }
-
   Future<void> _createAndPlay() async {
-    try {
-      // 1. 플레이어 생성
-      final player = await createPlayer();
-      if (mounted) {
-        setState(() {
-          _player?.dispose();
-          _player = player;
-        });
-      }
-      _addLog('Created');
-
-      // 2. 이벤트 구독 (상태 변경, 버퍼링 등)
-      _eventSubscription?.cancel();
-      _eventSubscription = subscribePlayerEvents(player: player).listen((event) {
-        if (!mounted) return;
-        event.when(
-          stateChanged: (state) => _addLog('State: ${state.name}'),
-          error: (err) => _addLog('Error: $err'),
-          endOfStream: () => _addLog('EOS (End of Stream)'),
-          buffering: (percent) => _addLog('Buffering: $percent%'),
-          clockLost: () => _addLog('Clock Lost'),
-        );
-      });
-
-      // 3. 소스 URI 설정
-      _addLog('Setting Source...');
-      await setSource(player: player, uri: _uriController.text);
-
-      // 4. 재생 시작
-      _addLog('Playing...');
-      await play(player: player);
-
-    } catch (e) {
-      if (mounted) {
-        _addLog('Exception: $e');
-      }
-    }
+    await _playerController.initialize(_uriController.text);
+    await _playerController.playStream();
   }
 
   Future<void> _stopPlayer() async {
-    if (_player != null) {
-      try {
-        await stop(player: _player!);
-      } catch (e) {
-        debugPrint('Failed to stop: $e');
-      } finally {
-        if (mounted) {
-          setState(() {
-            _eventSubscription?.cancel();
-            _eventSubscription = null;
-            _player?.dispose();
-            _player = null;
-          });
-          _addLog('Player Stopped and Disposed.');
-        }
-      }
-    }
+    await _playerController.stopStream();
+  }
+  
+  Future<void> _pausePlayer() async {
+    await _playerController.pauseStream();
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: const Text('MediaGst Example')),
+        appBar: AppBar(title: const Text('MediaGst Player Widget Example')),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text('Running on: $_platformVersion'),
+              const SizedBox(height: 10),
+              
+              // 비디오 위젯 영역
+              Container(
+                height: 300,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                clipBehavior: Clip.hardEdge,
+                child: GstPlayer(controller: _playerController),
+              ),
               const SizedBox(height: 20),
+
+              // 현재 상태 표시 영역
+              ListenableBuilder(
+                listenable: _playerController,
+                builder: (context, _) {
+                  return Text(
+                    '상태: ${_playerController.state.name} | '
+                    '버퍼링: ${_playerController.bufferingPercent}%',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
+
               TextField(
                 controller: _uriController,
                 decoration: const InputDecoration(
@@ -158,39 +116,24 @@ class _MyAppState extends State<MyApp> {
                   border: OutlineInputBorder(),
                 ),
               ),
-              const SizedBox(height: 10),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  width: double.infinity,
-                  child: ListView.builder(
-                    controller: _logScrollController,
-                    itemCount: _playerLogs.length,
-                    itemBuilder: (context, index) {
-                      return Text(
-                        _playerLogs[index],
-                        style: const TextStyle(fontFamily: 'monospace', fontSize: 12),
-                      );
-                    },
-                  ),
-                ),
-              ),
               const SizedBox(height: 20),
+              
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
                     onPressed: _createAndPlay,
-                    child: const Text('Play URI'),
+                    child: const Text('초기화 & 재생'),
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 8),
+                  ElevatedButton(
+                    onPressed: _pausePlayer,
+                    child: const Text('일시정지'),
+                  ),
+                  const SizedBox(width: 8),
                   ElevatedButton(
                     onPressed: _stopPlayer,
-                    child: const Text('Stop'),
+                    child: const Text('정지'),
                   ),
                 ],
               ),
