@@ -28,12 +28,21 @@ class GstPlayerController extends ChangeNotifier {
   Future<void> initialize(String uri) async {
     try {
       _errorMessage = null;
-      _player?.dispose();
-      
+
+      if (_eventSubscription != null) {
+        await _eventSubscription!.cancel();
+        _eventSubscription = null;
+      }
+      if (_player != null) {
+        _player!.dispose();
+        _player = null;
+      }
+
       _player = await createPlayer();
-      _eventSubscription?.cancel();
-      _eventSubscription = subscribePlayerEvents(player: _player!).listen(_onPlayerEvent);
-      
+      _eventSubscription = subscribePlayerEvents(
+        player: _player!,
+      ).listen(_onPlayerEvent);
+
       await setSource(player: _player!, uri: uri);
       _isInitialized = true;
       notifyListeners();
@@ -102,89 +111,64 @@ class GstPlayerController extends ChangeNotifier {
 }
 
 /// GStreamer 비디오 플레이어를 렌더링하는 위젯
-class GstPlayer extends StatefulWidget {
+class GstPlayer extends StatelessWidget {
   final GstPlayerController controller;
 
   const GstPlayer({super.key, required this.controller});
 
   @override
-  State<GstPlayer> createState() => _GstPlayerState();
-}
-
-class _GstPlayerState extends State<GstPlayer> {
-  @override
-  void initState() {
-    super.initState();
-    widget.controller.addListener(_onControllerUpdate);
-  }
-
-  @override
-  void didUpdateWidget(covariant GstPlayer oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.controller != widget.controller) {
-      oldWidget.controller.removeListener(_onControllerUpdate);
-      widget.controller.addListener(_onControllerUpdate);
-    }
-  }
-
-  @override
-  void dispose() {
-    widget.controller.removeListener(_onControllerUpdate);
-    super.dispose();
-  }
-
-  void _onControllerUpdate() {
-    setState(() {});
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (widget.controller.errorMessage != null) {
-      return Center(
-        child: Text(
-          'Error: ${widget.controller.errorMessage}',
-          style: const TextStyle(color: Colors.red),
-        ),
-      );
-    }
-
-    if (!widget.controller.isInitialized) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    Widget videoLayer;
-    if (widget.controller.textureId != null) {
-      videoLayer = Texture(textureId: widget.controller.textureId!);
-    } else {
-      videoLayer = Container(
-        color: Colors.black,
-        child: const Center(
-          child: Text(
-            '오디오 전용 또는 외부 윈도우 렌더링 중',
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-      );
-    }
-
-    return Stack(
-      children: [
-        videoLayer,
-        if (widget.controller.bufferingPercent > 0 && widget.controller.bufferingPercent < 100)
-          Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const CircularProgressIndicator(),
-                const SizedBox(height: 8),
-                Text(
-                  'Buffering ${widget.controller.bufferingPercent}%',
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ],
+    return ListenableBuilder(
+      listenable: controller,
+      builder: (context, _) {
+        if (controller.errorMessage != null) {
+          return Center(
+            child: Text(
+              'Error: ${controller.errorMessage}',
+              style: const TextStyle(color: Colors.red),
             ),
-          ),
-      ],
+          );
+        }
+
+        if (!controller.isInitialized) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        Widget videoLayer;
+        if (controller.textureId != null) {
+          videoLayer = Texture(textureId: controller.textureId!);
+        } else {
+          videoLayer = Container(
+            color: Colors.black,
+            child: const Center(
+              child: Text(
+                '오디오 전용 또는 외부 윈도우 렌더링 중',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          );
+        }
+
+        return Stack(
+          children: [
+            videoLayer,
+            if (controller.bufferingPercent > 0 && controller.bufferingPercent < 100)
+              Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const CircularProgressIndicator(),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Buffering ${controller.bufferingPercent}%',
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ],
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 }
