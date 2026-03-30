@@ -1,5 +1,5 @@
+use crate::frb_generated::StreamSink;
 use crate::player_instance::{PlayerEvent, PlayerInstance, PlayerState};
-use flutter_rust_bridge::frb::StreamSink;
 
 #[flutter_rust_bridge::frb(init)]
 pub fn init_app() {
@@ -40,8 +40,13 @@ pub fn set_source(player: &mut PlayerInstance, uri: String) -> Result<(), String
     player.set_source(&uri).map_err(|e| e.to_string())
 }
 
-pub fn subscribe_player_events(player: &mut PlayerInstance, sink: StreamSink<PlayerEvent>) -> Result<(), String> {
-    let mut rx = player.take_event_stream().ok_or_else(|| "Event stream already taken".to_string())?;
+pub fn subscribe_player_events(
+    player: &mut PlayerInstance,
+    sink: StreamSink<PlayerEvent>,
+) -> Result<(), String> {
+    let mut rx = player
+        .take_event_stream()
+        .ok_or_else(|| "Event stream already taken".to_string())?;
 
     tokio::spawn(async move {
         while let Some(event) = rx.recv().await {
@@ -56,13 +61,19 @@ pub fn subscribe_player_events(player: &mut PlayerInstance, sink: StreamSink<Pla
 }
 
 pub fn play(player: &mut PlayerInstance) -> Result<(), String> {
-    player.set_state(PlayerState::Play).map_err(|e| e.to_string())
+    player
+        .set_state(PlayerState::Play)
+        .map_err(|e| e.to_string())
 }
 
 pub fn pause(player: &mut PlayerInstance) -> Result<(), String> {
-    player.set_state(PlayerState::Pause).map_err(|e| e.to_string())
+    player
+        .set_state(PlayerState::Pause)
+        .map_err(|e| e.to_string())
 }
 
 pub fn stop(player: &mut PlayerInstance) -> Result<(), String> {
-    player.set_state(PlayerState::Stop).map_err(|e| e.to_string())
+    player
+        .set_state(PlayerState::Stop)
+        .map_err(|e| e.to_string())
 }

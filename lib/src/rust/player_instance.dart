@@ -8,39 +8,19 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 part 'player_instance.freezed.dart';
 
-            
-
-            
-
-            
-                // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<PlayerInstance>>
-                abstract class PlayerInstance implements RustOpaqueInterface {
-                    
-
-                    
-                }
-                
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<PlayerInstance>>
+abstract class PlayerInstance implements RustOpaqueInterface {}
 
 @freezed
-                sealed class PlayerEvent with _$PlayerEvent  {
-                    const PlayerEvent._();
+sealed class PlayerEvent with _$PlayerEvent {
+  const PlayerEvent._();
 
-                     const factory PlayerEvent.stateChanged(  PlayerState field0,) = PlayerEvent_StateChanged;
- const factory PlayerEvent.error(  String field0,) = PlayerEvent_Error;
- const factory PlayerEvent.endOfStream() = PlayerEvent_EndOfStream;
- const factory PlayerEvent.buffering(  int field0,) = PlayerEvent_Buffering;
- const factory PlayerEvent.clockLost() = PlayerEvent_ClockLost;
+  const factory PlayerEvent.stateChanged(PlayerState field0) =
+      PlayerEvent_StateChanged;
+  const factory PlayerEvent.error(String field0) = PlayerEvent_Error;
+  const factory PlayerEvent.endOfStream() = PlayerEvent_EndOfStream;
+  const factory PlayerEvent.buffering(int field0) = PlayerEvent_Buffering;
+  const factory PlayerEvent.clockLost() = PlayerEvent_ClockLost;
+}
 
-                    
-
-                    
-                }
-
-enum PlayerState {
-                    play,
-pause,
-stop,
-                    ;
-                    
-                }
-            
+enum PlayerState { play, pause, stop }

@@ -1,6 +1,5 @@
-use gstreamer as gst;
 use gst::prelude::*;
-use std::sync::Arc;
+use gstreamer as gst;
 use tokio::sync::mpsc;
 use uuid::Uuid;
 
@@ -126,33 +125,38 @@ impl PlayerInstance {
         // Bus 메시지 처리
         let bus = pipeline.bus().expect("Pipeline has no bus");
         let event_tx_clone = self.event_tx.clone();
-        
-        bus.add_watch(move |_bus, msg| {
-            use gst::MessageView;
-            match msg.view() {
-                MessageView::Error(err) => {
-                    let error_msg = format!("GStreamer error: {} ({})", err.error(), err.debug().unwrap_or_default());
-                    log::error!("{}", error_msg);
-                    let _ = event_tx_clone.send(PlayerEvent::Error(error_msg));
+
+        let _ = bus
+            .add_watch(move |_bus, msg| {
+                use gst::MessageView;
+                match msg.view() {
+                    MessageView::Error(err) => {
+                        let error_msg = format!(
+                            "GStreamer error: {} ({})",
+                            err.error(),
+                            err.debug().unwrap_or_default()
+                        );
+                        log::error!("{}", error_msg);
+                        let _ = event_tx_clone.send(PlayerEvent::Error(error_msg));
+                    }
+                    MessageView::Eos(_eos) => {
+                        log::info!("End of stream reached");
+                        let _ = event_tx_clone.send(PlayerEvent::EndOfStream);
+                    }
+                    MessageView::Buffering(buffering) => {
+                        let percent = buffering.percent();
+                        log::info!("Buffering: {}%", percent);
+                        let _ = event_tx_clone.send(PlayerEvent::Buffering(percent));
+                    }
+                    MessageView::ClockLost(_clock_lost) => {
+                        log::warn!("Clock lost");
+                        let _ = event_tx_clone.send(PlayerEvent::ClockLost);
+                    }
+                    _ => (),
                 }
-                MessageView::Eos(_eos) => {
-                    log::info!("End of stream reached");
-                    let _ = event_tx_clone.send(PlayerEvent::EndOfStream);
-                }
-                MessageView::Buffering(buffering) => {
-                    let percent = buffering.percent();
-                    log::info!("Buffering: {}%", percent);
-                    let _ = event_tx_clone.send(PlayerEvent::Buffering(percent));
-                }
-                MessageView::ClockLost(_clock_lost) => {
-                    log::warn!("Clock lost");
-                    let _ = event_tx_clone.send(PlayerEvent::ClockLost);
-                }
-                _ => (),
-            }
-            gst::glib::ControlFlow::Continue
-        })
-        .map_err(|e| anyhow::anyhow!("Failed to add bus watch: {}", e))?;
+                gst::glib::ControlFlow::Continue
+            })
+            .map_err(|e| anyhow::anyhow!("Failed to add bus watch: {}", e))?;
 
         self.pipeline = Some(pipeline);
         Ok(())

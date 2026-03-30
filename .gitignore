@@ -45,3 +45,7 @@ rust/.cargo/config.toml
 
 # OS 관련
 Thumbs.db
+
+# Flutter 도구 자동 생성 상태 파일
+.flutter
+.flutter_tool_state
