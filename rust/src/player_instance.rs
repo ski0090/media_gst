@@ -81,19 +81,19 @@ impl PlayerInstance {
             pipeline.set_state(gst::State::Null)?;
         }
 
-        // uridecodebin 기반 파이프라인 생성
+        // uridecodebin3 기반 파이프라인 생성
         let pipeline = gst::Pipeline::new();
-        let source = gst::ElementFactory::make("uridecodebin")
+        let source = gst::ElementFactory::make("uridecodebin3")
             .property("uri", uri)
             .build()
-            .map_err(|e| anyhow::anyhow!("Failed to create uridecodebin: {}", e))?;
+            .map_err(|e| anyhow::anyhow!("Failed to create uridecodebin3: {}", e))?;
 
         // 싱크 생성 (플랫폼별 조건부 컴파일 적용)
         let sink = crate::sink::create_video_sink()?;
 
         pipeline.add_many([&source, &sink])?;
 
-        // pad-added 시그널 처리 (uridecodebin에서 영상 패드가 나오면 싱크의 입력 패드에 연결)
+        // pad-added 시그널 처리 (uridecodebin3에서 영상 패드가 나오면 싱크의 입력 패드에 연결)
         let sink_clone = sink.clone();
         source.connect_pad_added(move |_src, src_pad| {
             let sink_pad = sink_clone.static_pad("sink").expect("Sink has no pad");
