@@ -68,6 +68,7 @@ class _MyAppState extends State<MyApp> {
       _playerLogs.add('[$time] $msg');
     });
     Future.delayed(const Duration(milliseconds: 50), () {
+      if (!mounted) return;
       if (_logScrollController.hasClients) {
         _logScrollController.animateTo(
           _logScrollController.position.maxScrollExtent,
@@ -82,10 +83,12 @@ class _MyAppState extends State<MyApp> {
     try {
       // 1. 플레이어 생성
       final player = await createPlayer();
-      setState(() {
-        _player?.dispose();
-        _player = player;
-      });
+      if (mounted) {
+        setState(() {
+          _player?.dispose();
+          _player = player;
+        });
+      }
       _addLog('Created');
 
       // 2. 이벤트 구독 (상태 변경, 버퍼링 등)
@@ -122,6 +125,16 @@ class _MyAppState extends State<MyApp> {
         await stop(player: _player!);
       } catch (e) {
         debugPrint('Failed to stop: $e');
+      } finally {
+        if (mounted) {
+          setState(() {
+            _eventSubscription?.cancel();
+            _eventSubscription = null;
+            _player?.dispose();
+            _player = null;
+          });
+          _addLog('Player Stopped and Disposed.');
+        }
       }
     }
   }

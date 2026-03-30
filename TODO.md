@@ -32,7 +32,7 @@
 - [x] `feat(rust): GStreamer 초기화 및 로깅 설정`
   - `lib.rs` — `gst::init()`, `env_logger` 연동
 
-- [ ] `feat(rust): PlayerInstance 구조체 정의 (UUID, 상태 열거형)` (pendding)
+- [ ] `feat(rust): PlayerInstance 구조체 정의 (UUID, 상태 열거형)` (pending)
   - `player_instance.rs` 신규
   - `PlayerState(Play/Pause/Stop)`, `Arc<Mutex<>>` 래핑
 
@@ -40,7 +40,7 @@
   - `api.rs` — `set_source()` 구현
   - SPEC §2.1 RTSP/HLS/MP4 파이프라인 구성
 
-- [ ] `feat(rust): tokio broadcast 채널로 전체 채널 상태 동기화` (pendding)
+- [ ] `feat(rust): tokio broadcast 채널로 전체 채널 상태 동기화` (pending)
   - `channel_manager.rs` 신규
   - SPEC §3.1 다채널 관리
 
