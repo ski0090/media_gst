@@ -74,33 +74,27 @@ impl PlayerInstance {
     }
 
     pub fn set_source(&mut self, uri: &str) -> anyhow::Result<()> {
-        log::info!("Player {} setting source to {}", self.id, uri);
+        let uri = uri.trim();
+        log::info!("Player {} setting source to '{}'", self.id, uri);
 
         // 이전 파이프라인이 있으면 정지 및 제거
         if let Some(pipeline) = self.pipeline.take() {
             pipeline.set_state(gst::State::Null)?;
         }
 
-        // uridecodebin 기반 파이프라인 생성
+        // uridecodebin3 기반 파이프라인 생성
         let pipeline = gst::Pipeline::new();
-        let source = gst::ElementFactory::make("uridecodebin")
+        let source = gst::ElementFactory::make("uridecodebin3")
             .property("uri", uri)
             .build()
-            .map_err(|e| anyhow::anyhow!("Failed to create uridecodebin: {}", e))?;
+            .map_err(|e| anyhow::anyhow!("Failed to create uridecodebin3: {}", e))?;
 
-        // 싱크 생성 (Windows: d3d11videosink, 기타: autovideosink)
-        #[cfg(target_os = "windows")]
-        let sink_name = "d3d11videosink";
-        #[cfg(not(target_os = "windows"))]
-        let sink_name = "autovideosink";
-
-        let sink = gst::ElementFactory::make(sink_name)
-            .build()
-            .map_err(|e| anyhow::anyhow!("Failed to create sink {}: {}", sink_name, e))?;
+        // 싱크 생성 (플랫폼별 조건부 컴파일 적용)
+        let sink = crate::sink::create_video_sink()?;
 
         pipeline.add_many([&source, &sink])?;
 
-        // pad-added 시그널 처리 (uridecodebin에서 영상 패드가 나오면 싱크의 입력 패드에 연결)
+        // pad-added 시그널 처리 (uridecodebin3에서 영상 패드가 나오면 싱크의 입력 패드에 연결)
         let sink_clone = sink.clone();
         source.connect_pad_added(move |_src, src_pad| {
             let sink_pad = sink_clone.static_pad("sink").expect("Sink has no pad");
@@ -108,8 +102,21 @@ impl PlayerInstance {
                 return;
             }
 
-            let new_pad_caps = src_pad.current_caps().expect("Pad has no caps");
-            let new_pad_struct = new_pad_caps.structure(0).expect("Caps have no structure");
+            let new_pad_caps = match src_pad.current_caps() {
+                Some(caps) => caps,
+                None => {
+                    log::warn!("Pad {} has no caps yet. Cannot link.", src_pad.name());
+                    return;
+                }
+            };
+            
+            let new_pad_struct = match new_pad_caps.structure(0) {
+                Some(s) => s,
+                None => {
+                    log::warn!("Caps have no structure");
+                    return;
+                }
+            };
             let new_pad_type = new_pad_struct.name();
 
             // 비디오 스트림인 경우에만 연결
