@@ -20,3 +20,5 @@ Set-Location -Path "$scriptPath\example"
 # 3. Flutter 앱 실행
 Write-Host "🚀 [Run] Flutter Windows 예제 앱을 실행합니다..." -ForegroundColor Yellow
 flutter run -d windows
+
+cd ..

@@ -74,7 +74,8 @@ impl PlayerInstance {
     }
 
     pub fn set_source(&mut self, uri: &str) -> anyhow::Result<()> {
-        log::info!("Player {} setting source to {}", self.id, uri);
+        let uri = uri.trim();
+        log::info!("Player {} setting source to '{}'", self.id, uri);
 
         // 이전 파이프라인이 있으면 정지 및 제거
         if let Some(pipeline) = self.pipeline.take() {
@@ -101,8 +102,21 @@ impl PlayerInstance {
                 return;
             }
 
-            let new_pad_caps = src_pad.current_caps().expect("Pad has no caps");
-            let new_pad_struct = new_pad_caps.structure(0).expect("Caps have no structure");
+            let new_pad_caps = match src_pad.current_caps() {
+                Some(caps) => caps,
+                None => {
+                    log::warn!("Pad {} has no caps yet. Cannot link.", src_pad.name());
+                    return;
+                }
+            };
+            
+            let new_pad_struct = match new_pad_caps.structure(0) {
+                Some(s) => s,
+                None => {
+                    log::warn!("Caps have no structure");
+                    return;
+                }
+            };
             let new_pad_type = new_pad_struct.name();
 
             // 비디오 스트림인 경우에만 연결

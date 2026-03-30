@@ -1,7 +1,16 @@
 pub mod api;
+mod frb_generated;
 pub mod player_instance;
 pub mod sink;
-mod frb_generated;
+
+use std::sync::OnceLock;
+use tokio::runtime::Runtime;
+
+static RUNTIME: OnceLock<Runtime> = OnceLock::new();
+
+pub fn get_runtime() -> &'static Runtime {
+    RUNTIME.get_or_init(|| Runtime::new().expect("Failed to create Tokio runtime"))
+}
 
 /// 전역 로깅 및 GStreamer 초기화를 수행합니다.
 pub fn init_native() {

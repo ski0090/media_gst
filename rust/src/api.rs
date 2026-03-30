@@ -48,7 +48,7 @@ pub fn subscribe_player_events(
         .take_event_stream()
         .ok_or_else(|| "Event stream already taken".to_string())?;
 
-    tokio::spawn(async move {
+    crate::get_runtime().spawn(async move {
         while let Some(event) = rx.recv().await {
             if let Err(e) = sink.add(event) {
                 log::error!("Failed to send event to Flutter: {:?}", e);
